@@ -9,12 +9,12 @@ export const setAuthToken = (token) => {
 };
 
 export const loginUser = async (email, password) => {
-  const response = await api.post("api/users/login", { email, password });
+  const response = await api.post("api/v1/users/login", { email, password });
   return response.data;
 };
 
 export const registerUser = async (userData) => {
   // userData = { firstName, lastName, email, password, dob, gender, country, street, number }
-  const response = await api.post("api/users/register", userData);
+  const response = await api.post("api/v1/users/register", userData);
   return response.data;
 };

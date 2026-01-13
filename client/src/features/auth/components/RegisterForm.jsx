@@ -77,14 +77,8 @@ const RegisterForm = ({ onSubmit }) => {
         required
       />
       <input
-        name="street"
-        placeholder="Street"
-        onChange={handleChange}
-        required
-      />
-      <input
-        name="street_number"
-        placeholder="Number"
+        name="city"
+        placeholder="City"
         onChange={handleChange}
         required
       />
