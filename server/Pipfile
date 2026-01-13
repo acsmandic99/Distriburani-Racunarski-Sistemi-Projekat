@@ -10,6 +10,8 @@ python-dotenv = "*"
 bcrypt = "*"
 flask-cors = "*"
 pydantic = {extras = ["email"], version = "*"}
+flask-pymongo = "*"
+flask-socketio = "*"
 
 [dev-packages]
 

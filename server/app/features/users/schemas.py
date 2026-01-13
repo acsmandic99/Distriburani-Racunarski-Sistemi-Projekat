@@ -1,37 +1,36 @@
-from pydantic import BaseModel, validator
-from datetime import datetime  # Promenjeno iz date u datetime
+from pydantic import BaseModel, Field,field_validator, EmailStr
+from datetime import datetime
 from typing import Optional
-import re
+
+
+
 
 class UserCreateSchema(BaseModel):
+    #===== CREATE ====="""
     first_name: str
     last_name: str
-    email: str
-    password: str
-    date_of_birth: datetime  
+    email: EmailStr
+    password: str = Field(...,min_length=6)
+    date_of_birth: datetime
     gender: str
     country: str
-    street: str
-    street_number: str
+    city: str
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    role: str = "reader"
+    total_recipes:int = 0
+    average_rating: float = 0.0
 
-    @validator('email')
-    def email_valid(cls, v):
-        if '@' not in v or '.' not in v.split('@')[-1]:
-            raise ValueError('Invalid email address')
-        return v
 
-    @validator('password')
-    def password_length(cls, v):
-        if len(v) < 6:
-            raise ValueError('Password must be at least 6 characters long')
-        return v
-
-    @validator('date_of_birth')
-    def date_of_birth_valid(cls, v):
-        # Provera da li je datum u prošlosti
+    @field_validator("date_of_birth")
+    @classmethod
+    def validate_date_of_birth(cls, v: datetime):
         if v > datetime.now():
-            raise ValueError('Date of birth must be in the past')
+            raise ValueError("Date of birth must be in the past")
         return v
+
+
+# ===== UPDATE =====
 
 class UserUpdateSchema(BaseModel):
     first_name: Optional[str] = None
@@ -43,21 +42,24 @@ class UserUpdateSchema(BaseModel):
     street_number: Optional[str] = None
     profile_picture: Optional[str] = None
 
+
+# ===== RESPONSE =====
+
 class UserResponseSchema(BaseModel):
     id: str
     first_name: str
     last_name: str
-    email: str
-    date_of_birth: datetime 
+    email: EmailStr
+    date_of_birth: datetime
     gender: str
     country: str
-    street: str
-    street_number: str
+    city: str
     role: str
-    created_at: str
-    updated_at: str
+    created_at: datetime
+    updated_at: datetime
     total_recipes: int
     average_rating: float
 
-    class Config:
-        from_attributes = True
+    model_config = {
+        "from_attributes": True
+    }

@@ -1,6 +1,7 @@
+from flask_pymongo import PyMongo
 from flask_cors import CORS
+#from flask_socketio import SocketIO
 
-cors = CORS()
-
-def init_extensions(app):
-    cors.init_app(app)
+mongo: PyMongo = PyMongo()
+cors: CORS = CORS()
+#socketio: SocketIO = SocketIO()
