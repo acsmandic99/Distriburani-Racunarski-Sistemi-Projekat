@@ -12,8 +12,9 @@ flask-cors = "*"
 pydantic = {extras = ["email"], version = "*"}
 flask-pymongo = "*"
 flask-socketio = "*"
+flask-jwt-extended = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "3.12"

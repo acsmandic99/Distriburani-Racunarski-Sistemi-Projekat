@@ -63,3 +63,8 @@ class UserResponseSchema(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+
+class ChangePasswordSchema(BaseModel):
+    old_password: str
+    new_password: str = Field(..., min_length=6)

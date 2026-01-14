@@ -1,15 +1,19 @@
 from app.extensions import mongo
-from .schemas import UserCreateSchema,UserResponseSchema
+from .schemas import UserCreateSchema,UserResponseSchema,UserUpdateSchema,ChangePasswordSchema
 from datetime import datetime,timezone
-from .utils.password_utils import hash_password
+from .utils.password_utils import hash_password, verify_password
+from bson import ObjectId
 
 class UserService:
     @staticmethod
     def create_user(userCreate: UserCreateSchema):
+        if mongo.db is None:
+            raise Exception("Database connection is not initialized.")
         userCreate.created_at = datetime.now(timezone.utc)
         userCreate.updated_at = datetime.now(timezone.utc)
         user_dict = userCreate.model_dump()
         exists = mongo.db.users.find_one({"email": user_dict['email']})
+        
         if exists:
             raise ValueError("User with this email already exists") 
         user_dict['password'] = hash_password(user_dict['password'])
@@ -17,3 +21,88 @@ class UserService:
         user_dict['id'] = str(result.inserted_id)
         response_obj = UserResponseSchema(**user_dict)
         return response_obj.model_dump(mode='json')
+    
+
+    @staticmethod
+    def get_user(user_id):
+        if mongo.db is None:
+            raise Exception("Database connection is not initialized.")
+        try:
+                oid = ObjectId(user_id)
+        except Exception:
+                return None
+
+        user = mongo.db.users.find_one({"_id": oid})
+
+        if not user:
+            return None
+
+        user["id"] = str(user["_id"])
+        
+        return UserResponseSchema(**user).model_dump(mode='json')
+    
+
+    @staticmethod
+    def update_user(user_id,update_data: UserUpdateSchema):
+        if mongo.db is None:
+            raise Exception("Database connection is not initialized.")
+        try:
+                oid = ObjectId(user_id)
+        except Exception:
+                return None
+        user = mongo.db.users.find_one({"_id": oid})
+        if not user:
+            return None
+
+        update_dict = update_data.model_dump(exclude_unset=True)
+
+        if not update_dict:
+            raise ValueError("No data provided for update")
+
+        update_dict["updated_at"] = datetime.now()
+
+        result = mongo.db.users.find_one_and_update(
+            {"_id": oid},
+            {"$set": update_dict},
+            return_document=True 
+        )
+
+        if not result:
+            return None
+        result["id"] = str(result["_id"])
+        return UserResponseSchema(**result).model_dump(mode='json')
+
+
+    @staticmethod
+    def change_password(user_id: str, data: ChangePasswordSchema):
+        if mongo.db is None:
+            raise Exception("Database connection is not initialized.")
+        try:
+            oid = ObjectId(user_id)
+        except:
+            return False
+
+        user = mongo.db.users.find_one({"_id": oid})
+        if not user:
+            return False
+
+        if not verify_password(data.old_password, user["password"]):
+            return False
+
+        hashed_new_password = hash_password(data.new_password)
+
+        mongo.db.users.update_one(
+            {"_id": oid},
+            {"$set": {"password": hashed_new_password, "updated_at": datetime.now()}}
+        )
+        return True
+
+    @staticmethod
+    def get_user_by_email(email):
+        if mongo.db is None:
+            raise Exception("Database connection is not initialized.")
+        user = mongo.db.users.find_one({"email" : email})
+        if not user:
+             return None
+        return user
+         
