@@ -4,6 +4,7 @@ from .features.auth import auth_bp
 from .extensions import mongo, cors,jwt
 from .test_db import test_connection
 from datetime import timedelta
+from .features.shared.utils.jwt.blocklist import check_if_token_is_revoked
 def create_app() -> Flask:
     app = Flask(__name__)
     
@@ -14,6 +15,9 @@ def create_app() -> Flask:
     mongo.init_app(app)
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
     jwt.init_app(app)
+
+    jwt.token_in_blocklist_loader(check_if_token_is_revoked)
+
     cors.init_app(app, resources={r"/api/*": {"origins": "*"}})
     test_connection()
   

@@ -12,7 +12,8 @@ PASSWORD_CHANGED = "Password changed successfully"
 
 #auth
 INVALID_PASSWORD_OR_EMAIL = "Invalid email or password"
-LOGIN_SUCCSESS = "Login successful"
+LOGIN_SUCCSESS = "Login successfull"
+LOGOUT_SUCCESS = "Logout successfull"
 #General
 INVALID_DATA_FORMAT = "Invalid data format"
 INTERNAL_ERROR = "An internal server error occurred"

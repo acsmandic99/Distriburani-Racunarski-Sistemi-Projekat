@@ -5,8 +5,9 @@ from .services import AuthService
 from pydantic import ValidationError
 from ..shared.utils import api_response
 from ..shared.constants import messages
-from flask_jwt_extended import jwt_required,get_jwt_identity
+from flask_jwt_extended import jwt_required,get_jwt_identity,get_jwt
 from ..users.services import UserService
+
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
@@ -50,3 +51,18 @@ def get_current_user():
             )
     except Exception as e:
         return api_response.error(str(e), 500)
+
+@auth_bp.route("/logout", methods=["POST"])
+@jwt_required()
+def logout():
+    jti = get_jwt()["jti"]
+    success = AuthService.logout(jti)
+
+    if success:
+        return api_response.success(messages.LOGOUT_SUCCESS,None,200)
+    else:
+        return api_response.error(message = "Failed to block token",
+                                  data = None,
+                                  status = 500)
+
+
