@@ -1,17 +1,20 @@
 import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import "./Navbar.css";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
-
+  if (location.pathname === "/login" || location.pathname === "/register") {
+      return null;
+    }
   return (
     <nav>
       <div>
