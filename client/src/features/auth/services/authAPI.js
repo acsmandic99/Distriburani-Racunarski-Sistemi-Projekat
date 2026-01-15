@@ -9,7 +9,7 @@ export const setAuthToken = (token) => {
 };
 
 export const loginUser = async (email, password) => {
-  const response = await api.post("api/v1/users/login", { email, password });
+  const response = await api.post("api/v1/auth/login", { email, password });
   return response.data;
 };
 

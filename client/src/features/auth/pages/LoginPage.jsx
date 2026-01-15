@@ -12,12 +12,17 @@ const LoginPage = () => {
 
   const handleLogin = async ({ email, password }) => {
     try {
-      const data = await loginUser(email, password);
-      login(data);
-      setAuthToken(data.token);
+      const response = await loginUser(email, password);
+
+      const token = response.data.access_token;
+      login(token);
       navigate("/recipes");
     } catch (err) {
-      setError(err.response?.data?.error || "Login failed");
+      setError(
+        err.response?.data?.message ||
+          err.response?.data?.error ||
+          "Invalid email or password"
+      );
     }
   };
 
