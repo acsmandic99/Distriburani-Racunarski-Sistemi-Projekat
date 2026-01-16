@@ -62,17 +62,20 @@ class UserService:
         if not user:
             return None
         if avatar_image:
-            # Ovde bi bilo idealno obrisati staru sliku ako nije default
-            # if user.get('profile_picture') and 'default-avatar' not in user['profile_picture']:
-            #    ImageService.delete_image(user['profile_picture'])
+            current_image = user.get("profile_picture")
+
+        # 2. PROVERA: Brišemo staru sliku SAMO ako postoji i NIJE default
+            if current_image != "default-avatar.jpg":
+                ImageService.delete_image(current_image)
+                print(f"DEBUG: Stara slika {current_image} poslata na brisanje.")
+            else:
+                print("DEBUG: Preskačem brisanje - slika je default ili ne postoji.")
 
             profile_image_url = ImageService.upload_image(avatar_image, PROFILE_IMAGE_FOLDER)
-            print(profile_image_url)
             update_dict['profile_picture'] = profile_image_url
         if not update_dict:
             user["id"] = str(user["_id"])
             return UserResponseSchema(**user).model_dump(mode='json')
-        print(update_dict)
         update_dict["updated_at"] = datetime.now(timezone.utc)
 
         result = mongo.db.users.find_one_and_update(

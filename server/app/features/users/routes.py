@@ -58,7 +58,7 @@ def update_user():
     try:
         user_id = get_jwt_identity()
         data = request.form.to_dict()
-        avatar = request.files.get("profile_picture")
+        avatar = request.files.get("avatar")
 
         updated_user = UserService.update_user(user_id, data,avatar)
         if not updated_user:
