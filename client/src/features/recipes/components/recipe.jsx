@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Recipe = ({ recipe, onRate }) => {
+  const navigate = useNavigate();
   const [userRating, setUserRating] = useState(0);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
@@ -10,9 +12,13 @@ const Recipe = ({ recipe, onRate }) => {
     onRate(recipe.id, rating);
   };
 
-  const displayRating = recipe.totalRatings > 0 
-    ? (recipe.rating / recipe.totalRatings).toFixed(1) 
+  const displayRating = recipe.total_recipe_ratings > 0 
+    ? recipe.average_rating.toFixed(1)
     : "Nema ocena";
+
+    const handleNavigateToDetails = () => {
+    navigate(`/recipes/${recipe.id}`, { state: { recipe } });
+  };
 
   return (
     <div className="recipe-card">
@@ -20,11 +26,12 @@ const Recipe = ({ recipe, onRate }) => {
         src={recipe.image_url} 
         alt={recipe.title}
         className="recipe-image"
+        onClick={handleNavigateToDetails}
       />
       
       <div className="recipe-content">
-        <h3 className="recipe-title">{recipe.title}</h3>
-        <p className="recipe-description">{recipe.description}</p>
+        <h3 className="recipe-title" onClick={handleNavigateToDetails}>{recipe.title}</h3>
+        <p className="recipe-description">{recipe.type_of_dish} • {recipe.difficulty}</p>
         
         <div className="recipe-info">
           <div className="info-item">
@@ -34,12 +41,14 @@ const Recipe = ({ recipe, onRate }) => {
             <span>{recipe.number_of_people} osobe</span>
           </div>
         </div>
-
+        <div className="recipe-author">
+          <span>{recipe.author.first_name} {recipe.author.last_name}</span>
+        </div>
         <div className="recipe-rating-section">
           <div className="rating-display">
             <span>Prosecna ocena:</span>
             <span className="rating-value">
-              {displayRating} {recipe.totalRatings > 0 && `(${recipe.totalRatings})`}
+              {displayRating} {recipe.total_recipe_ratings > 0 && `(${recipe.total_recipe_ratings})`}
             </span>
           </div>
           
