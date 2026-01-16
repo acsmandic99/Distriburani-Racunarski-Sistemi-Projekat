@@ -27,3 +27,10 @@ class AuthorManagmentService:
         return True
 
         
+    @staticmethod
+    def get_all_author_requests():
+        requests = list(mongo.db.author_requests.find({"status": "pending"}))
+        for req in requests:
+            req["_id"] = str(req["_id"])
+            req["user_id"] = str(req["user_id"])
+        return requests

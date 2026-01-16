@@ -29,6 +29,10 @@ def add_recipe():
             })
         return api_response.error(messages.INVALID_DATA_FORMAT, 400, custom_errors)
     except ValueError as e:
+        if str(e) == messages.AUTHOR_NOT_EXIST:
+            return api_response.error(messages.AUTHOR_NOT_EXIST,404)
+        if str(e) == messages.NOT_AUTHOR:
+            return api_response.error(messages.NOT_AUTHOR,403)
         return api_response.error(messages.INVALID_DATA_FORMAT,400,str(e))
     except Exception as e:
         # Logovanje

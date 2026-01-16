@@ -45,7 +45,12 @@ class UserService:
         user["id"] = str(user["_id"])
         
         return UserResponseSchema(**user).model_dump(mode='json')
-    
+    @staticmethod
+    def get_users():
+        users = list(mongo.db.users.find({}, {"password": 0}))
+        for u in users:
+            u["_id"] = str(u["_id"])
+        return users
 
     @staticmethod
     def update_user(user_id,raw_data,avatar_image):
@@ -131,9 +136,6 @@ class UserService:
         try:
             
             author = mongo.db.users.find_one({"_id" : user_id})
-            if author.get('role') == READER_ROLE:
-                UserService.promote_user_to_author(user_id)
-                author['role'] = AUTHOR_ROLE
             return author
         except:
             return None

@@ -21,8 +21,15 @@ INTERNAL_ERROR = "An internal server error occurred"
 
 #Recipe
 RECIPE_CREATED = "Recipe created successfully"
-
+AUTHOR_NOT_EXIST = "Author doesnt exist"
+NOT_AUTHOR = "You are not yet author,request from admin to change your role!"
+RECIPES_FETCHED = "Recipes fetched successfully"
 
 #AUTHOR MANAGMENT
 ROLE_REQUESTED_SUCCESSFULLY = "Role requested successfully"
 ROLE_ALREADY_REQUESTED = "Role already requested"
+AUTHOR_REQUESTS_FETCHED = "Author requests fetched successfully"
+
+#ADMIN
+USERS_FETCHED = "Users fetched successfully"
+ONLY_ADMIN_ALLOWED = "Only admins allowed"

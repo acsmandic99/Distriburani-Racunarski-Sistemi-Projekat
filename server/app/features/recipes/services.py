@@ -4,14 +4,20 @@ from ..shared.utils.image_service.service import ImageService
 from ..shared.utils.image_service.folders import RECIPES_FOLDER
 from app.extensions import mongo
 from bson import ObjectId
+from ..shared.constants.user_roles import READER_ROLE
+from ..shared.constants import messages
+
 class RecipeService:
     @staticmethod
     def add_recipe(user_id,image_file,raw_data):
         recipe = RecipeCreateSchema(**raw_data)
         oid = ObjectId(user_id)
         raw_author = UserService.get_author_data(oid)
+        
         if not raw_author:
-            raise ValueError("Author doesnt exist")
+            raise ValueError(messages.AUTHOR_NOT_EXIST)
+        if raw_author['role'] == READER_ROLE:
+            raise ValueError(messages.NOT_AUTHOR)
         author_info = AuthorInfoSchema(**raw_author)
 
         if image_file:

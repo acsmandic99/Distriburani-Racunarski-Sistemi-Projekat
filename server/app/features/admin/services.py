@@ -1,27 +1,22 @@
 from app.extensions import mongo
 from bson import ObjectId
-
-
+from ..users.services import UserService
+from ..recipes.services import RecipeService
+from ..author_managment.services import AuthorManagmentService
 
 class AdminService:
     @staticmethod
     def get_users():
-        users = list(mongo.db.users.find({}, {"password": 0}))
-        for u in users:
-            u["_id"] = str(u["_id"])
+        users = UserService.get_users()
         return users
 
     @staticmethod
     def get_recipes():
-        recipes = list(mongo.db.recipes.find().sort("_id", -1))
-        for r in recipes:
-            r["_id"] = str(r["_id"])
+        recipes = RecipeService.get_all_recipes(1,50)
         return recipes
 
     @staticmethod
     def get_all_author_requests():
-        requests = list(mongo.db.author_requests.find({"status": "pending"}))
-        for req in requests:
-            req["_id"] = str(req["_id"])
-            req["user_id"] = str(req["user_id"])
+        requests = AuthorManagmentService.get_all_author_requests()
         return requests
+    
