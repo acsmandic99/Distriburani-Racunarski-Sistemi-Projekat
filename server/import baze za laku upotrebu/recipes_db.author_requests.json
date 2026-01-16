@@ -1,0 +1,36 @@
+[{
+  "_id": {
+    "$oid": "696a90dff342ccaa0104feeb"
+  },
+  "user_id": {
+    "$oid": "69676640a109ddccadfe2ee6"
+  },
+  "status": "pending",
+  "created_at": {
+    "$date": "2026-01-16T19:26:23.618Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "696a92763ecedb6d119a8695"
+  },
+  "user_id": {
+    "$oid": "696a7eb2dcf48c0a85793a38"
+  },
+  "status": "pending",
+  "created_at": {
+    "$date": "2026-01-16T19:33:10.300Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "696a989fd5e35271adaaa3cc"
+  },
+  "user_id": {
+    "$oid": "696a9889d5e35271adaaa3cb"
+  },
+  "status": "pending",
+  "created_at": {
+    "$date": "2026-01-16T19:59:27.374Z"
+  }
+}]

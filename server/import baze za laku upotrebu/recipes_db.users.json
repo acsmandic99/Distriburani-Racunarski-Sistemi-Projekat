@@ -234,8 +234,8 @@
   "updated_at": {
     "$date": "2026-01-16T12:57:09.770Z"
   },
-  "role": "author",
-  "total_recipes": 2,
+  "role": "reader",
+  "total_recipes": 3,
   "average_rating": 0,
   "total_count": 2
 },
@@ -257,9 +257,107 @@
     "$date": "2026-01-16T11:36:51.457Z"
   },
   "updated_at": {
-    "$date": "2026-01-16T11:36:51.457Z"
+    "$date": "2026-01-16T21:06:30.438Z"
   },
   "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0,
+  "profile_picture": "/static/uploads/profile-images/076eafc1cbbf41e9937ccc9b3419a27a.jpg"
+},
+{
+  "_id": {
+    "$oid": "696a7eb2dcf48c0a85793a38"
+  },
+  "first_name": "Mil2os1212",
+  "last_name": "Mandic",
+  "email": "milos23Mandi2c@gmail.com",
+  "password": "$2b$12$FI5aqzpNeDJa9ozigGrrMu0MRa0ar/OXhPw6iJbZctZ9GGVgmehC6",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "female",
+  "country": "Serbia",
+  "city": "Novi Sad",
+  "created_at": {
+    "$date": "2026-01-16T18:08:50.014Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-16T18:08:50.014Z"
+  },
+  "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0
+},
+{
+  "_id": {
+    "$oid": "696a90bdf342ccaa0104feea"
+  },
+  "first_name": "Mil2os1212",
+  "last_name": "Mandic",
+  "email": "mil2os23Mandi2c@gmail.com",
+  "password": "$2b$12$rENcTkauE1iftfzJ7hVVTOgeElEpFDfa.xjEukoH5AAKKo4QocZyG",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "male",
+  "country": "Serbia",
+  "city": "Novi Sad",
+  "created_at": {
+    "$date": "2026-01-16T19:25:49.452Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-16T19:25:49.452Z"
+  },
+  "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0
+},
+{
+  "_id": {
+    "$oid": "696a9889d5e35271adaaa3cb"
+  },
+  "first_name": "cao",
+  "last_name": "Mandic",
+  "email": "novimail@gmail.com",
+  "password": "$2b$12$VgcNTkAyOqIzvPQ1vXXuCu4CjDiYOpDhlSZ8fSrdDSzV5TslZOCVS",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "male",
+  "country": "Serbia",
+  "city": "Beograd",
+  "created_at": {
+    "$date": "2026-01-16T19:59:05.238Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-16T21:05:53.338Z"
+  },
+  "role": "author",
+  "total_recipes": 1,
+  "average_rating": 0,
+  "profile_picture": "/static/uploads/profile-images/22aeeaa7d650474aac3bd60106afec72.jpg"
+},
+{
+  "_id": {
+    "$oid": "696ab2386c5e3625909be8e3"
+  },
+  "first_name": "admin",
+  "last_name": "sifra = admin123",
+  "email": "admin@gmail.com",
+  "password": "$2b$12$CQaz5DTAe.Gxn7k.tQJMUuKu.fa.Ocav0LHiGqLzCHafXMJGfEa5O",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "male",
+  "country": "Serbia",
+  "city": "Novi Sad",
+  "created_at": {
+    "$date": "2026-01-16T21:48:40.562Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-16T21:48:40.562Z"
+  },
+  "role": "admin",
   "total_recipes": 0,
   "average_rating": 0
 }]

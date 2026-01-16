@@ -55,4 +55,62 @@
   "comments": [],
   "average_rating": 0,
   "total_recipe_ratings": 0
+},
+{
+  "_id": {
+    "$oid": "696aa1a7e6d337dba6ff95f3"
+  },
+  "title": "Biftek",
+  "type_of_dish": "Glavno jelo",
+  "time_for_preperation": "120min",
+  "difficulty": "Medium",
+  "number_of_people": 4,
+  "ingredients": [
+    "kupus",
+    "komadina mesa"
+  ],
+  "steps": [
+    "zagrejati tiganj",
+    "skuvati"
+  ],
+  "image_url": "/static/uploads/recipes/b53c94fccc294bacb24a7150afc40740.jpg",
+  "additional_marks": [],
+  "author": {
+    "first_name": "cao",
+    "last_name": "Mandic",
+    "total_recipes": 0,
+    "average_rating": 0
+  },
+  "comments": [],
+  "average_rating": 0,
+  "total_recipe_ratings": 0
+},
+{
+  "_id": {
+    "$oid": "696aadcecedcd390e08b98d0"
+  },
+  "title": "Biftek",
+  "type_of_dish": "Glavno jelo",
+  "time_for_preperation": "120min",
+  "difficulty": "Medium",
+  "number_of_people": 4,
+  "ingredients": [
+    "kupus",
+    "komadina mesa"
+  ],
+  "steps": [
+    "zagrejati tiganj",
+    "skuvati"
+  ],
+  "image_url": "/static/uploads/recipes/ed1bcadf29744a72b7cafb00c82f6652.jpg",
+  "additional_marks": [],
+  "author": {
+    "first_name": "NOVO12",
+    "last_name": "Cao",
+    "total_recipes": 2,
+    "average_rating": 0
+  },
+  "comments": [],
+  "average_rating": 0,
+  "total_recipe_ratings": 0
 }]
