@@ -59,6 +59,7 @@ class UserResponseSchema(BaseModel):
     updated_at: datetime
     total_recipes: int
     average_rating: float
+    profile_picture: Optional[str] = None
 
     model_config = {
         "from_attributes": True
