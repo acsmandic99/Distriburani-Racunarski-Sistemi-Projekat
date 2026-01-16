@@ -68,3 +68,8 @@ class UserResponseSchema(BaseModel):
 class ChangePasswordSchema(BaseModel):
     old_password: str
     new_password: str = Field(..., min_length=6)
+
+
+class AuthorRequestSchema(BaseModel):
+    user_id: str
+    status: str

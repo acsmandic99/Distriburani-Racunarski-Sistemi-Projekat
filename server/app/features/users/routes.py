@@ -105,4 +105,8 @@ def change_password():
     except ValueError as e:
         return api_response.error(str(e), 400)
     except Exception as e:
+        #logovanje
+        print(e)
         return api_response.error(messages.INTERNAL_ERROR, 500)
+    
+

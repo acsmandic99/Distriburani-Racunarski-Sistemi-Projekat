@@ -2,6 +2,8 @@ from flask import Flask
 from .features.users import users_bp
 from .features.auth import auth_bp
 from .features.recipes import recipes_bp
+from .features.author_managment import author_managment_bp
+from .features.admin import admin_bp
 from .extensions import mongo, cors,jwt
 from .test_db import test_connection
 from datetime import timedelta
@@ -26,6 +28,8 @@ def create_app() -> Flask:
     app.register_blueprint(users_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(recipes_bp)
+    app.register_blueprint(author_managment_bp)
+    app.register_blueprint(admin_bp)
     #with app.app_context():
         #print(f"{'Endpoint':<40} {'Methods':<20} {'Rule'}")
         #print("-" * 80)

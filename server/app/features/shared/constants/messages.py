@@ -21,3 +21,8 @@ INTERNAL_ERROR = "An internal server error occurred"
 
 #Recipe
 RECIPE_CREATED = "Recipe created successfully"
+
+
+#AUTHOR MANAGMENT
+ROLE_REQUESTED_SUCCESSFULLY = "Role requested successfully"
+ROLE_ALREADY_REQUESTED = "Role already requested"

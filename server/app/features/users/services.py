@@ -1,9 +1,11 @@
 from app.extensions import mongo
-from .schemas import UserCreateSchema,UserResponseSchema,UserUpdateSchema,ChangePasswordSchema
+from .schemas import UserCreateSchema,UserResponseSchema,UserUpdateSchema,ChangePasswordSchema,AuthorRequestSchema
 from datetime import datetime,timezone
 from .utils.password_utils import hash_password, verify_password
 from bson import ObjectId
 from ..shared.constants.user_roles import AUTHOR_ROLE,READER_ROLE
+from ..shared.constants.author_request_status import AUTHOR_REQUEST_PENDING
+from ..shared.constants import messages
 class UserService:
     @staticmethod
     def create_user(userCreate: UserCreateSchema):
@@ -150,3 +152,5 @@ class UserService:
         except Exception as e:
             #logovanje
             print(f"Greska pri inc {e}")
+
+
