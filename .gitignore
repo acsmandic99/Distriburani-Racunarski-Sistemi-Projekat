@@ -4,3 +4,8 @@ package-lock.json
 venv/
 __pycache__/
 *.pyc
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp

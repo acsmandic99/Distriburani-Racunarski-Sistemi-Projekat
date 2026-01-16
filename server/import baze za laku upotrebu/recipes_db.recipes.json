@@ -1,0 +1,58 @@
+[{
+  "_id": {
+    "$oid": "696a556d807d3fe262572e01"
+  },
+  "title": "Mamina sarma",
+  "type_of_dish": "Glavno jelo",
+  "time_for_preperation": "120min",
+  "difficulty": "Medium",
+  "number_of_people": 4,
+  "ingredients": [
+    "kupus",
+    "mleveno meso"
+  ],
+  "steps": [
+    "Zaviti sarmu",
+    "skuvati"
+  ],
+  "image_url": "/static/uploads/recipes/default-recipe.jpg",
+  "additional_marks": [],
+  "author": {
+    "first_name": "NOVO12",
+    "last_name": "Cao",
+    "total_recipes": 0,
+    "average_rating": 0
+  },
+  "comments": [],
+  "average_rating": 0,
+  "total_recipe_ratings": 0
+},
+{
+  "_id": {
+    "$oid": "696a5b57398d00d3d36e0717"
+  },
+  "title": "Bakina sarma",
+  "type_of_dish": "Glavno jelo",
+  "time_for_preperation": "120min",
+  "difficulty": "Medium",
+  "number_of_people": 4,
+  "ingredients": [
+    "kupus",
+    "mleveno meso"
+  ],
+  "steps": [
+    "Zaviti sarmu",
+    "skuvati"
+  ],
+  "image_url": "/static/uploads/recipes/fe16ce127e0b4c3cbd54990556e74e79.jpg",
+  "additional_marks": [],
+  "author": {
+    "first_name": "NOVO12",
+    "last_name": "Cao",
+    "total_recipes": 1,
+    "average_rating": 0
+  },
+  "comments": [],
+  "average_rating": 0,
+  "total_recipe_ratings": 0
+}]

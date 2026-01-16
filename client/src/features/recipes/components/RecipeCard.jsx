@@ -11,11 +11,7 @@ const RecipeCard = ({ recipe }) => {
       <p>
         Author: {recipe.author.first_name} {recipe.author.last_name}
       </p>
-
-      <Link
-        to={`/recipes/${recipe._id}`}
-        state={{ recipe }} // pass the full recipe object
-      >
+      <Link to={`/recipes/${recipe._id}`} state={{ recipe }}>
         View details
       </Link>
     </div>

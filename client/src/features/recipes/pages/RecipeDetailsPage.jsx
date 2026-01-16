@@ -1,21 +1,40 @@
 import React, { useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../shared/contexts/AuthContext";
 import "./RecipeDetailsPage.css";
 
-export const RecipeDetailsPage = () => {
+const RecipeDetailsPage = () => {
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const location = useLocation();
-
-  // Get recipe from Router state
-  const recipe = location.state?.recipe;
+  const { recipe } = location.state || {};
 
   if (!recipe) return <p>Recipe not found.</p>;
 
-  const isAuthor = user && recipe.authorId === user.id;
+  const handleEdit = () => {
+    console.log("Edit recipe:", recipe._id);
+  };
+
+  const handleDelete = () => {
+    console.log("Delete recipe:", recipe._id);
+  };
+
+  const isAuthor =
+    user && recipe.author && recipe.author.first_name === user.first_name;
 
   return (
     <div className="recipe-details-page">
+      <button
+        onClick={() => navigate(-1)}
+        style={{
+          marginBottom: "1rem",
+          padding: "0.5rem 1rem",
+          cursor: "pointer",
+        }}
+      >
+        &larr; Back
+      </button>
+
       <h1>{recipe.title}</h1>
       <p>
         <strong>Type:</strong> {recipe.type_of_dish}
@@ -34,13 +53,15 @@ export const RecipeDetailsPage = () => {
         {recipe.author.last_name}
       </p>
 
-      <img
-        src={recipe.image_url || "/placeholder-recipe.png"}
-        alt={recipe.title}
-        className="recipe-image"
-      />
+      {recipe.image_url && (
+        <img
+          src={recipe.image_url}
+          alt={recipe.title}
+          className="recipe-image"
+        />
+      )}
 
-      {recipe.additional_marks?.length > 0 && (
+      {recipe.additional_marks && recipe.additional_marks.length > 0 && (
         <p>
           <strong>Tags:</strong> {recipe.additional_marks.join(", ")}
         </p>
@@ -62,10 +83,16 @@ export const RecipeDetailsPage = () => {
 
       {isAuthor && (
         <div className="recipe-actions">
-          <button>Edit</button>
-          <button style={{ marginLeft: "10px" }}>Delete</button>
+          <button onClick={handleEdit}>Edit</button>
+          <button onClick={handleDelete} style={{ marginLeft: "10px" }}>
+            Delete
+          </button>
         </div>
       )}
+
+      <div className="recipe-comments">
+        <h3>Comments / Ratings (placeholder)</h3>
+      </div>
     </div>
   );
 };
