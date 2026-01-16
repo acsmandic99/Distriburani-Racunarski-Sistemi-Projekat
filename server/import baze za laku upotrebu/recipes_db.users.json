@@ -1,0 +1,265 @@
+[{
+  "_id": {
+    "$oid": "6966c5c650003c88fa39b159"
+  },
+  "first_name": "Mil2os1212",
+  "last_name": "Mandic",
+  "email": "milos31323241233Mandic@gmail.com",
+  "password": "$2b$12$NmK1NMCw2Qlq.Vf8jgpZ4O4Q4OzZ3Eed3sRRYn12W1AFifmIG3J9a",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "female",
+  "country": "Serbia",
+  "city": "Novi Sad",
+  "created_at": {
+    "$date": "2026-01-13T23:23:02.354Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-13T23:23:02.354Z"
+  },
+  "role": "reader",
+  "total_recipes": null,
+  "average_rating": null
+},
+{
+  "_id": {
+    "$oid": "6966c5e9ec99ca53bb6166bc"
+  },
+  "first_name": "Mil2os1212",
+  "last_name": "Mandic",
+  "email": "milos313234241233Mandic@gmail.com",
+  "password": "$2b$12$uYFh9esgsFCcsam2DvFCE.XG7ddF4J4FB6mpMgXdjWAWzBbsisGw6",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "female",
+  "country": "Serbia",
+  "city": "Novi Sad",
+  "created_at": {
+    "$date": "2026-01-13T23:23:37.119Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-13T23:23:37.119Z"
+  },
+  "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0
+},
+{
+  "_id": {
+    "$oid": "6966c68c6518c11a6c257002"
+  },
+  "first_name": "NOVO",
+  "last_name": "Mandic",
+  "email": "milos3132344241233Mandic@gmail.com",
+  "password": "$2b$12$DKI.Na9Ss1pLbvUcdH2kc./eTWsKQvBJw1Rpk0jS4BFUvEIbXnfy2",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "female",
+  "country": "Serbia",
+  "city": "Novi Sad",
+  "created_at": {
+    "$date": "2026-01-13T23:26:20.454Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-14T00:59:33.099Z"
+  },
+  "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0
+},
+{
+  "_id": {
+    "$oid": "6966c6ca433dbbfa3bd358a4"
+  },
+  "first_name": "Mil2os1212",
+  "last_name": "Mandic",
+  "email": "milos31323434241233Mandic@gmail.com",
+  "password": "$2b$12$VGF21WCKQ7o7cubcM3d1xuXw7xVk4VTkakUc2NHE.GAWvWCLdA5Da",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "female",
+  "country": "Serbia",
+  "city": "Novi Sad",
+  "created_at": {
+    "$date": "2026-01-13T22:27:22.105Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-13T22:27:22.105Z"
+  },
+  "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0
+},
+{
+  "_id": {
+    "$oid": "6966c7d349241663aac72ba4"
+  },
+  "first_name": "Mil2os1212",
+  "last_name": "Mandic",
+  "email": "milos313234342241233Mandic@gmail.com",
+  "password": "$2b$12$mlsi6o3.qlP9bIDKqZZVqOZoqLEWcYAZk1fSjAXtWgJVobEpNjlBe",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "female",
+  "country": "Serbia",
+  "city": "Novi Sad",
+  "created_at": {
+    "$date": "2026-01-13T22:31:47.424Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-13T22:31:47.424Z"
+  },
+  "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0
+},
+{
+  "_id": {
+    "$oid": "6966ca001c01569886c7b766"
+  },
+  "first_name": "Milos",
+  "last_name": "Mandic",
+  "email": "milos.mandicc@gmail.com",
+  "password": "$2b$12$p4Ot6i2T7MFRwsU3kZbD2uQoR4hp4UbU6LBRzGVl613gQF5CVEqRa",
+  "date_of_birth": {
+    "$date": "1999-12-12T00:00:00.000Z"
+  },
+  "gender": "male",
+  "country": "Srb",
+  "city": "Novi sad",
+  "created_at": {
+    "$date": "2026-01-13T22:41:03.843Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-13T22:41:03.843Z"
+  },
+  "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0
+},
+{
+  "_id": {
+    "$oid": "6966ccad1c01569886c7b767"
+  },
+  "first_name": "ada",
+  "last_name": "Mandic",
+  "email": "ada@gmail.com",
+  "password": "$2b$12$LxqezDFZVW8JuSn4eb3wOuWt1lLH87.8.tg2biv/GSyi7ghloTJha",
+  "date_of_birth": {
+    "$date": "1999-12-12T00:00:00.000Z"
+  },
+  "gender": "M",
+  "country": "as",
+  "city": "as",
+  "created_at": {
+    "$date": "2026-01-13T22:52:29.238Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-13T22:52:29.238Z"
+  },
+  "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0
+},
+{
+  "_id": {
+    "$oid": "6966d1b8fe553e9b032a8e99"
+  },
+  "first_name": "Mil2os1212",
+  "last_name": "Mandic",
+  "email": "milosMandic@gmail.com",
+  "password": "$2b$12$5C.4tBgHbre/ED6Dz6jx5enhijt0VzaJS3MRNlv5oVj7xXgiJFcEG",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "female",
+  "country": "Serbia",
+  "city": "Novi Sad",
+  "created_at": {
+    "$date": "2026-01-13T23:13:59.990Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-13T23:13:59.990Z"
+  },
+  "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0
+},
+{
+  "_id": {
+    "$oid": "6966d252fe553e9b032a8e9b"
+  },
+  "first_name": "Mil2os1212",
+  "last_name": "Mandic",
+  "email": "milosMandi2c@gmail.com",
+  "password": "$2b$12$5VkvuMurjqPaWzEhuHF3IePqOZ8OD2SCeH/3NgLtRQRR5IFocivnC",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "female",
+  "country": "Serbia",
+  "city": "Novi Sad",
+  "created_at": {
+    "$date": "2026-01-13T23:16:34.697Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-13T23:16:34.697Z"
+  },
+  "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0
+},
+{
+  "_id": {
+    "$oid": "69676640a109ddccadfe2ee6"
+  },
+  "first_name": "NOVO12",
+  "last_name": "Cao",
+  "email": "milos3Mandi2c@gmail.com",
+  "password": "$2b$12$z7ZIBDPvzwglbPQ1X76Yt.7MjZbs.WX.GtEiFOcngxE9.yfqd4Jom",
+  "date_of_birth": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "gender": "female",
+  "country": "Serbia",
+  "city": "Novi Sad",
+  "created_at": {
+    "$date": "2026-01-14T09:47:44.493Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-16T12:57:09.770Z"
+  },
+  "role": "author",
+  "total_recipes": 2,
+  "average_rating": 0,
+  "total_count": 2
+},
+{
+  "_id": {
+    "$oid": "696a22d3917f325845ae92ee"
+  },
+  "first_name": "Milos",
+  "last_name": "mandic",
+  "email": "milos2.mandicc@gmail.com",
+  "password": "$2b$12$zCTHSImS5UrgrE9BPhcG/eU7jk0jx42OT3FbcbsFZkAQ6OEkMUNrK",
+  "date_of_birth": {
+    "$date": "1999-01-12T00:00:00.000Z"
+  },
+  "gender": "12",
+  "country": "asdas",
+  "city": "Novi sad",
+  "created_at": {
+    "$date": "2026-01-16T11:36:51.457Z"
+  },
+  "updated_at": {
+    "$date": "2026-01-16T11:36:51.457Z"
+  },
+  "role": "reader",
+  "total_recipes": 0,
+  "average_rating": 0
+}]
