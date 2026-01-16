@@ -1,85 +1,66 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react"; // Dodat useEffect
 import { AuthContext } from "../../shared/contexts/AuthContext";
 import Recipe from "../components/recipe.jsx";
 import "../components/recipes.css";
-
-const PLACEHOLDER_RECIPES = [
-  {
-    id: 1,
-    title: "Pasta Carbonara",
-    description: "Tradicionalna italijanska pasta",
-    image: "",
-    prepTime: 20,
-    servings: 4,
-    rating: 0,
-    totalRatings: 0,
-    ingredients: ["500g spagete", "200g slanine", "4 jaja", "100g parmezana", "So i biber"],
-    instructions: "Skuvaj pastu, isprzi slaninu, izmesaj sa jajima i sirom..."
-  },
-  {
-     id: 2,
-    title: "Cokoladni kolac",
-    description: "Najcokoladniji kolac ikada",
-    image: "",
-    prepTime: 45,
-    servings: 8,
-    rating: 0,
-    totalRatings: 0,
-    ingredients: ["200g cokolade", "150g brasna", "3 jaja", "100g secera"],
-    instructions: "Istopi cokoladu, sjedini sastojke, peci na 180C..."
-  },
-  {
-    id: 3,
-    title: "Grcka salata",
-    description: "Osvezavajuca salata sa fetom i maslinama",
-    image: "",
-    prepTime: 15,
-    servings: 4,
-    rating: 0,
-    totalRatings: 0,
-    ingredients: ["2 paradajza", "1 krastavac", "200g feta sira", "Masline"],
-    instructions: "Iseckaj povrce, dodaj fetu i masline..."
-  }
-  ];
+import axios from "axios"; 
 
 const RecipesPage = () => {
   const { user } = useContext(AuthContext);
-  const [recipes, setRecipes] = useState(PLACEHOLDER_RECIPES);
+  const [recipes, setRecipes] = useState([]); 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleRateRecipe = (recipeId, rating) => {
-    setRecipes(prevRecipes => 
-      prevRecipes.map(recipe => 
-        recipe.id === recipeId
-          ? {
-              ...recipe,
-              rating: recipe.rating + rating,
-              totalRatings: recipe.totalRatings + 1
-            }
-          : recipe
-      )
-    );
+  const fetchRecipes = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("http://localhost:5000/api/v1/recipes");
+      
+      if (response.data.success) {
+        setRecipes(response.data.data); 
+      }
+    } catch (err) {
+      setError("Neuspešno učitavanje recepata.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (!user) {
-    return <p>Loading user data...</p>;
-  }
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
+
+  const handleRateRecipe = (recipeId, rating) => {
+    console.log(`Rating recipe ${recipeId} with ${rating}`);
+  };
+
+if (loading) return <p>Učitavanje recepata...</p>;
+if (error) return <p>{error}</p>;
 
   return (
     <div style={{ padding: "2rem", color: "black" }}>
       <div id="welcome-message">
-        <h1>
-          Welcome, {user.first_name} {user.last_name}!
-        </h1>
-        <p>This is the placeholder for the recipes page.</p>
+        {/* 2. Uslovno prikazivanje poruke dobrodošlice */}
+        {user ? (
+          <h1>Welcome, {user.first_name} {user.last_name}!</h1>
+        ) : (
+          <h1>Welcome, Guest!</h1>
+        )}
+        <p>Pogledajte najnovije recepte naših kuvara.</p>
       </div>
+      
       <div className="recipes-grid">
-        {recipes.map(recipe => (
-          <Recipe 
-            key={recipe.id} 
-            recipe={recipe} 
-            onRate={handleRateRecipe}
-          />
-        ))}
+        {recipes.length > 0 ? (
+          recipes.map(recipe => (
+            <Recipe 
+              key={recipe._id} 
+              recipe={recipe} 
+              onRate={handleRateRecipe}
+            />
+          ))
+        ) : (
+          <p>Trenutno nema objavljenih recepata.</p>
+        )}
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ function AppRoutes() {
     <Routes>
       <Route
         path="/"
-        element={user ? <Navigate to="/recipes" /> : <Navigate to="/login" />}
+        element={user ? <Navigate to="/recipes" /> : <Navigate to="/recipes" />}
       />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />

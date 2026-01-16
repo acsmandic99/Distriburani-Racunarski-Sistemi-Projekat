@@ -18,7 +18,7 @@ class ImageService:
             return None
         
         original_name = secure_filename(file_storage_object.filename)
-        extension = original_name.rsplit('.',1)[1].tolower()
+        extension = original_name.rsplit('.',1)[1].lower()
 
         unique_filename = f"{uuid.uuid4().hex}.{extension}"
 

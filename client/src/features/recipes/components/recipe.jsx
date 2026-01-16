@@ -17,7 +17,7 @@ const Recipe = ({ recipe, onRate }) => {
   return (
     <div className="recipe-card">
       <img 
-        src={recipe.image} 
+        src={recipe.image_url} 
         alt={recipe.title}
         className="recipe-image"
       />
@@ -28,10 +28,10 @@ const Recipe = ({ recipe, onRate }) => {
         
         <div className="recipe-info">
           <div className="info-item">
-            <span>{recipe.prepTime} min</span>
+            <span>{recipe.time_for_preperation} </span>
           </div>
           <div className="info-item">
-            <span>{recipe.servings} osobe</span>
+            <span>{recipe.number_of_people} osobe</span>
           </div>
         </div>
 
@@ -84,7 +84,11 @@ const Recipe = ({ recipe, onRate }) => {
             </ul>
             
             <h4>Priprema:</h4>
-            <p>{recipe.instructions}</p>
+            <ul>
+              {recipe.steps.map((ing, idx) => (
+                <li key={idx}>{ing}</li>
+              ))}
+            </ul>
           </div>
         )}
       </div>
