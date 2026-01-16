@@ -33,6 +33,7 @@ class UserService:
         if mongo.db is None:
             raise Exception("Database connection is not initialized.")
         try:
+                
                 oid = ObjectId(user_id)
         except Exception:
                 return None
@@ -72,9 +73,6 @@ class UserService:
         # 2. PROVERA: Brišemo staru sliku SAMO ako postoji i NIJE default
             if current_image != "default-avatar.jpg":
                 ImageService.delete_image(current_image)
-                print(f"DEBUG: Stara slika {current_image} poslata na brisanje.")
-            else:
-                print("DEBUG: Preskačem brisanje - slika je default ili ne postoji.")
 
             profile_image_url = ImageService.upload_image(avatar_image, PROFILE_IMAGE_FOLDER)
             update_dict['profile_picture'] = profile_image_url
@@ -146,10 +144,11 @@ class UserService:
     def promote_user_to_author(user_id):
         if mongo.db is None:
             raise Exception("Database connection is not initialized.")
-    
+
         try:
-            mongo.db.users.find_one_and_update(
-                {"_id" : user_id},
+            oid = ObjectId(user_id)
+            result = mongo.db.users.find_one_and_update(
+                {"_id" : oid},
                 {"$set" : {"role" : AUTHOR_ROLE}}
             )
         except Exception as e:
@@ -172,3 +171,22 @@ class UserService:
             print(f"Greska pri inc {e}")
 
 
+    @staticmethod
+    def delete_user_completely(user_id):
+        user = mongo.db.users.find_one({"_id": user_id})
+        if not user:
+            raise ValueError(messages.USER_NOT_FOUND)
+
+        image_name = user.get("profile_picture")
+    
+        if image_name and image_name != "default-avatar.jpg":
+            try:
+                ImageService.delete_image(image_name)
+            except Exception as e:
+                print(f"Log: Slika nije obrisana ili ne postoji na disku: {e}")
+
+        mongo.db.author_requests.delete_many({"user_id": user_id})
+
+        mongo.db.users.delete_one({"_id": user_id})
+        
+        return True
