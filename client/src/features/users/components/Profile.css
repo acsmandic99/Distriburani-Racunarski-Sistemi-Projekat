@@ -80,3 +80,8 @@ body {
   margin-bottom: 10px;
   text-align: center;
 }
+
+.avatar-preview img {
+  max-width: 200px;
+  max-height: 200px;
+}

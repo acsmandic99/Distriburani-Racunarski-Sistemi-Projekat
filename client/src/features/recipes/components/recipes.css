@@ -6,6 +6,12 @@
   align-items: start;
 }
 
+.recipe-title:hover,
+.recipe-image:hover {
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
 .recipe-card {
   background: white;
   border-radius: 8px;
@@ -140,4 +146,47 @@
   font-size: 0.9rem;
   color: #444;
   line-height: 1.5;
+}
+/* ✅ DODAJ OVE STILOVE NA KRAJU FAJLA */
+
+.recipe-author {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.recipe-details ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.recipe-details ol li {
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.recipe-title:hover,
+.recipe-image:hover {
+  opacity: 0.8;
+  transition: opacity 0.3s;
+  cursor: pointer;
 }

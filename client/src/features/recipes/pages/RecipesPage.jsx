@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect } from "react"; // Dodat useEffect
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../shared/contexts/AuthContext";
 import Recipe from "../components/recipe.jsx";
 import "../components/recipes.css";
-import axios from "axios";
+import { getRecipes } from "../services/recipesAPI.js";
 
 const RecipesPage = () => {
   const { user } = useContext(AuthContext);
@@ -13,11 +13,8 @@ const RecipesPage = () => {
   const fetchRecipes = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/api/v1/recipes");
-
-      if (response.data.success) {
-        setRecipes(response.data.data);
-      }
+      const data = await getRecipes();
+      setRecipes(data);
     } catch (err) {
       setError("Neuspešno učitavanje recepata.");
       console.error(err);
