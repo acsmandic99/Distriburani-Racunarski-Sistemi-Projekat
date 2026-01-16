@@ -1,6 +1,7 @@
 from flask import Flask
 from .features.users import users_bp
 from .features.auth import auth_bp
+from .features.recipes import recipes_bp
 from .extensions import mongo, cors,jwt
 from .test_db import test_connection
 from datetime import timedelta
@@ -24,5 +25,12 @@ def create_app() -> Flask:
     # Register blueprints
     app.register_blueprint(users_bp)
     app.register_blueprint(auth_bp)
-    
+    app.register_blueprint(recipes_bp)
+    #with app.app_context():
+        #print(f"{'Endpoint':<40} {'Methods':<20} {'Rule'}")
+        #print("-" * 80)
+        #for rule in app.url_map.iter_rules():
+        # Filtriramo samo rute (izbacujemo static fajlove ako smetaju)
+        #    methods = ', '.join(rule.methods)
+         #   print(f"{rule.endpoint:<40} {methods:<20} {rule}")
     return app

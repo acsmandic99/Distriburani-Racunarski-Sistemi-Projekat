@@ -17,3 +17,7 @@ LOGOUT_SUCCESS = "Logout successfull"
 #General
 INVALID_DATA_FORMAT = "Invalid data format"
 INTERNAL_ERROR = "An internal server error occurred"
+
+
+#Recipe
+RECIPE_CREATED = "Recipe created successfully"
