@@ -58,24 +58,21 @@ def update_user():
     try:
         user_id = get_jwt_identity()
         data = request.form.to_dict()
-        file = request.files.get("avatar")
-        user_data = UserUpdateSchema(**data)
+        avatar = request.files.get("avatar")
 
-        if file:
-            filename = f"user_{user_id}_{file.filename}"
-            avatar_folder = os.path.join(current_app.root_path, "static/uploads/avatars")
-            os.makedirs(avatar_folder, exist_ok=True)
-            file.save(os.path.join(avatar_folder, filename))
-            user_data.profile_picture = f"/static/uploads/avatars/{filename}"
-
-        updated_user = UserService.update_user(user_id, user_data)
+        updated_user = UserService.update_user(user_id, data,avatar)
         if not updated_user:
             return api_response.error(messages.USER_NOT_FOUND, 404)
 
         return api_response.success(messages.USER_UPDATED, updated_user, 200)
     except ValidationError as e:
-        errors = [{"field": err["loc"][-1], "message": err["msg"]} for err in e.errors()]
-        return api_response.error(messages.INVALID_DATA, 400, errors)
+        custom_errors = []
+        for error in e.errors():
+            custom_errors.append({
+                "field": error["loc"][-1], 
+                "message": error["msg"]      
+            })
+        return api_response.error(messages.INVALID_DATA, 400, custom_errors)
     except ValueError as e:
         return api_response.error(messages.INVALID_DATA, 400, str(e))
     except Exception as e:
@@ -110,4 +107,8 @@ def change_password():
     except ValueError as e:
         return api_response.error(str(e), 400)
     except Exception as e:
+        #logovanje
+        print(e)
         return api_response.error(messages.INTERNAL_ERROR, 500)
+    
+

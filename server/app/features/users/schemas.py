@@ -38,8 +38,7 @@ class UserUpdateSchema(BaseModel):
     date_of_birth: Optional[datetime] = None
     gender: Optional[str] = None
     country: Optional[str] = None
-    street: Optional[str] = None
-    street_number: Optional[str] = None
+    city: Optional[str] = None
     profile_picture: Optional[str] = None
 
 
@@ -69,3 +68,8 @@ class UserResponseSchema(BaseModel):
 class ChangePasswordSchema(BaseModel):
     old_password: str
     new_password: str = Field(..., min_length=6)
+
+
+class AuthorRequestSchema(BaseModel):
+    user_id: str
+    status: str

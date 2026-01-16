@@ -1,6 +1,7 @@
 from .schemas import RecipeCreateSchema,FullRecipeSchema,AuthorInfoSchema
 from ..users.services import UserService 
 from ..shared.utils.image_service.service import ImageService
+from ..shared.utils.image_service.folders import RECIPES_FOLDER
 from app.extensions import mongo
 from bson import ObjectId
 class RecipeService:
@@ -14,7 +15,7 @@ class RecipeService:
         author_info = AuthorInfoSchema(**raw_author)
 
         if image_file:
-            image_url = ImageService.upload_image(image_file)
+            image_url = ImageService.upload_image(image_file,RECIPES_FOLDER)
         else:
             image_url = "/static/uploads/recipes/default-recipe.jpg"
         recipe.image_url = image_url
