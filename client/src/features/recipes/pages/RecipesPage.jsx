@@ -1,84 +1,36 @@
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../../shared/contexts/AuthContext";
-import Recipe from "../components/recipe.jsx";
-import "../components/recipes.css";
+import React, { useEffect, useState } from "react";
+import { getRecipes } from "../services/recipesAPI";
+import RecipeCard from "../components/RecipeCard";
+import "./RecipesPage.css";
 
-const PLACEHOLDER_RECIPES = [
-  {
-    id: 1,
-    title: "Pasta Carbonara",
-    description: "Tradicionalna italijanska pasta",
-    image: "",
-    prepTime: 20,
-    servings: 4,
-    rating: 0,
-    totalRatings: 0,
-    ingredients: ["500g spagete", "200g slanine", "4 jaja", "100g parmezana", "So i biber"],
-    instructions: "Skuvaj pastu, isprzi slaninu, izmesaj sa jajima i sirom..."
-  },
-  {
-     id: 2,
-    title: "Cokoladni kolac",
-    description: "Najcokoladniji kolac ikada",
-    image: "",
-    prepTime: 45,
-    servings: 8,
-    rating: 0,
-    totalRatings: 0,
-    ingredients: ["200g cokolade", "150g brasna", "3 jaja", "100g secera"],
-    instructions: "Istopi cokoladu, sjedini sastojke, peci na 180C..."
-  },
-  {
-    id: 3,
-    title: "Grcka salata",
-    description: "Osvezavajuca salata sa fetom i maslinama",
-    image: "",
-    prepTime: 15,
-    servings: 4,
-    rating: 0,
-    totalRatings: 0,
-    ingredients: ["2 paradajza", "1 krastavac", "200g feta sira", "Masline"],
-    instructions: "Iseckaj povrce, dodaj fetu i masline..."
-  }
-  ];
+export const RecipesPage = () => {
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-const RecipesPage = () => {
-  const { user } = useContext(AuthContext);
-  const [recipes, setRecipes] = useState(PLACEHOLDER_RECIPES);
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const data = await getRecipes();
+        setRecipes(data);
+      } catch (err) {
+        console.error("Failed to fetch recipes", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleRateRecipe = (recipeId, rating) => {
-    setRecipes(prevRecipes => 
-      prevRecipes.map(recipe => 
-        recipe.id === recipeId
-          ? {
-              ...recipe,
-              rating: recipe.rating + rating,
-              totalRatings: recipe.totalRatings + 1
-            }
-          : recipe
-      )
-    );
-  };
+    fetchRecipes();
+  }, []);
 
-  if (!user) {
-    return <p>Loading user data...</p>;
-  }
+  if (loading) return <p>Loading recipes...</p>;
+  if (recipes.length === 0) return <p>No recipes found.</p>;
 
   return (
-    <div style={{ padding: "2rem", color: "black" }}>
-      <div id="welcome-message">
-        <h1>
-          Welcome, {user.first_name} {user.last_name}!
-        </h1>
-        <p>This is the placeholder for the recipes page.</p>
-      </div>
+    <div className="recipes-page">
+      <h1>Recipes</h1>
       <div className="recipes-grid">
-        {recipes.map(recipe => (
-          <Recipe 
-            key={recipe.id} 
-            recipe={recipe} 
-            onRate={handleRateRecipe}
-          />
+        {recipes.map((recipe) => (
+          <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
       </div>
     </div>

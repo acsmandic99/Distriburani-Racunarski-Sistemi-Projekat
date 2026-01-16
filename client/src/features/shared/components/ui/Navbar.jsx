@@ -8,19 +8,35 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
+  if (location.pathname === "/login" || location.pathname === "/register") {
+    return null;
+  }
+
+  const handleLogout = async () => {
+    await logout();
     navigate("/login");
   };
-  if (location.pathname === "/login" || location.pathname === "/register") {
-      return null;
-    }
+
   return (
     <nav>
       <div>
         <Link to="/">Home</Link>
-        {user && <Link to="/recipes">Recipes</Link>}
+
+        {user && (
+          <>
+            <Link to="/recipes">Recipes</Link>
+            <Link to="/profile">Profile</Link>
+          </>
+        )}
+
+        {user?.role === "admin" && (
+          <>
+            <Link to="/admin/users">Users</Link>
+            <Link to="/admin/role-requests">Role Requests</Link>
+          </>
+        )}
       </div>
+
       <div>
         {user ? (
           <button onClick={handleLogout}>Logout</button>
