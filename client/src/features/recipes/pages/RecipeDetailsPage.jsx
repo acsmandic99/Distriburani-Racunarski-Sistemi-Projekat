@@ -1,77 +1,48 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { getRecipeById } from "../services/recipesAPI";
+import React, { useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../shared/contexts/AuthContext";
 import "./RecipeDetailsPage.css";
 
 export const RecipeDetailsPage = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const location = useLocation();
 
-  const [recipe, setRecipe] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // Get recipe from Router state
+  const recipe = location.state?.recipe;
 
-  useEffect(() => {
-    const fetchRecipe = async () => {
-      try {
-        const data = await getRecipeById(id);
-        setRecipe(data);
-      } catch (err) {
-        console.error("Failed to fetch recipe:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRecipe();
-  }, [id]);
-
-  const handleEdit = () => {
-    // Placeholder za sada
-    console.log("Edit recipe:", recipe.id);
-    // navigate(`/recipes/${recipe.id}/edit`);
-  };
-
-  const handleDelete = () => {
-    // Placeholder za sada
-    console.log("Delete recipe:", recipe.id);
-    // Dodati API call ka backendu
-  };
-
-  if (loading) return <p>Loading recipe...</p>;
   if (!recipe) return <p>Recipe not found.</p>;
 
-  const isAuthor = user && recipe.authorId === user.id; // Promeniti ako treba da odgovara backendu
+  const isAuthor = user && recipe.authorId === user.id;
 
   return (
     <div className="recipe-details-page">
-      <h1>{recipe.name}</h1>
+      <h1>{recipe.title}</h1>
       <p>
-        <strong>Type:</strong> {recipe.type}
+        <strong>Type:</strong> {recipe.type_of_dish}
       </p>
       <p>
-        <strong>Prep time:</strong> {recipe.prepTime}
+        <strong>Prep time:</strong> {recipe.time_for_preperation}
       </p>
       <p>
         <strong>Difficulty:</strong> {recipe.difficulty}
       </p>
       <p>
-        <strong>Servings:</strong> {recipe.servings}
+        <strong>Servings:</strong> {recipe.number_of_people}
       </p>
       <p>
-        <strong>Author:</strong> {recipe.author}
+        <strong>Author:</strong> {recipe.author.first_name}{" "}
+        {recipe.author.last_name}
       </p>
 
       <img
-        src={recipe.image || "/placeholder-recipe.png"}
-        alt={recipe.name}
+        src={recipe.image_url || "/placeholder-recipe.png"}
+        alt={recipe.title}
         className="recipe-image"
       />
 
-      {recipe.tags && recipe.tags.length > 0 && (
+      {recipe.additional_marks?.length > 0 && (
         <p>
-          <strong>Tags:</strong> {recipe.tags.join(", ")}
+          <strong>Tags:</strong> {recipe.additional_marks.join(", ")}
         </p>
       )}
 
@@ -91,16 +62,10 @@ export const RecipeDetailsPage = () => {
 
       {isAuthor && (
         <div className="recipe-actions">
-          <button onClick={handleEdit}>Edit</button>
-          <button onClick={handleDelete} style={{ marginLeft: "10px" }}>
-            Delete
-          </button>
+          <button>Edit</button>
+          <button style={{ marginLeft: "10px" }}>Delete</button>
         </div>
       )}
-
-      <div className="recipe-comments">
-        <h3>Comments / Ratings (placeholder)</h3>
-      </div>
     </div>
   );
 };
