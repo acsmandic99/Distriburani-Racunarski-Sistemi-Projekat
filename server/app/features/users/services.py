@@ -6,6 +6,9 @@ from bson import ObjectId
 from ..shared.constants.user_roles import AUTHOR_ROLE,READER_ROLE
 from ..shared.constants.author_request_status import AUTHOR_REQUEST_PENDING
 from ..shared.constants import messages
+from ..shared.utils.image_service.service import ImageService
+from ..shared.utils.image_service.folders import PROFILE_IMAGE_FOLDER
+
 class UserService:
     @staticmethod
     def create_user(userCreate: UserCreateSchema):
@@ -45,23 +48,32 @@ class UserService:
     
 
     @staticmethod
-    def update_user(user_id,update_data: UserUpdateSchema):
+    def update_user(user_id,raw_data,avatar_image):
         if mongo.db is None:
             raise Exception("Database connection is not initialized.")
         try:
-                oid = ObjectId(user_id)
-        except Exception:
+            oid = ObjectId(user_id)
+            update_data = UserUpdateSchema(**raw_data)
+            update_dict = update_data.model_dump(exclude_unset=True)
+        except Exception as e:
+                print(f"Validation/ObjectId error: {e}")
                 return None
         user = mongo.db.users.find_one({"_id": oid})
         if not user:
             return None
+        if avatar_image:
+            # Ovde bi bilo idealno obrisati staru sliku ako nije default
+            # if user.get('profile_picture') and 'default-avatar' not in user['profile_picture']:
+            #    ImageService.delete_image(user['profile_picture'])
 
-        update_dict = update_data.model_dump(exclude_unset=True)
-
+            profile_image_url = ImageService.upload_image(avatar_image, PROFILE_IMAGE_FOLDER)
+            print(profile_image_url)
+            update_dict['profile_picture'] = profile_image_url
         if not update_dict:
-            raise ValueError("No data provided for update")
-
-        update_dict["updated_at"] = datetime.now()
+            user["id"] = str(user["_id"])
+            return UserResponseSchema(**user).model_dump(mode='json')
+        print(update_dict)
+        update_dict["updated_at"] = datetime.now(timezone.utc)
 
         result = mongo.db.users.find_one_and_update(
             {"_id": oid},
@@ -71,6 +83,7 @@ class UserService:
 
         if not result:
             return None
+        
         result["id"] = str(result["_id"])
         return UserResponseSchema(**result).model_dump(mode='json')
 
