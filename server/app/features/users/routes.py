@@ -1,11 +1,12 @@
-from .schemas import UserCreateSchema, UserResponseSchema,UserUpdateSchema,ChangePasswordSchema
+from .schemas import UserCreateSchema, UserResponseSchema, UserUpdateSchema, ChangePasswordSchema
 from pydantic import ValidationError
 from .services import UserService
 from app.features.shared.utils import api_response
 from app.features.shared.constants import messages
-from flask import request
+from flask import request, current_app
 from . import users_bp
-from flask_jwt_extended import jwt_required,get_jwt_identity,get_jwt
+from flask_jwt_extended import jwt_required, get_jwt_identity
+import os
 
 
 @users_bp.route("/register", methods=["POST"])
@@ -56,23 +57,27 @@ def get_user(user_id):
 def update_user():
     try:
         user_id = get_jwt_identity()
-        user_data = UserUpdateSchema(**request.get_json())
+        data = request.form.to_dict()
+        file = request.files.get("avatar")
+        user_data = UserUpdateSchema(**data)
 
-        updated_user = UserService.update_user(user_id,user_data)
+        if file:
+            filename = f"user_{user_id}_{file.filename}"
+            avatar_folder = os.path.join(current_app.root_path, "static/uploads/avatars")
+            os.makedirs(avatar_folder, exist_ok=True)
+            file.save(os.path.join(avatar_folder, filename))
+            user_data.profile_picture = f"/static/uploads/avatars/{filename}"
+
+        updated_user = UserService.update_user(user_id, user_data)
         if not updated_user:
             return api_response.error(messages.USER_NOT_FOUND, 404)
-            
+
         return api_response.success(messages.USER_UPDATED, updated_user, 200)
     except ValidationError as e:
-        custom_errors = []
-        for error in e.errors():
-            custom_errors.append({
-                "field": error["loc"][-1], 
-                "message": error["msg"]      
-            })
-        return api_response.error(messages.INVALID_DATA, 400, custom_errors)
+        errors = [{"field": err["loc"][-1], "message": err["msg"]} for err in e.errors()]
+        return api_response.error(messages.INVALID_DATA, 400, errors)
     except ValueError as e:
-        return api_response.error(messages.INVALID_DATA,400,str(e))
+        return api_response.error(messages.INVALID_DATA, 400, str(e))
     except Exception as e:
         # Logovanje
         print(e)
