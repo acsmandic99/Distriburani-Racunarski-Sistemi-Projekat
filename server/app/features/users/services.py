@@ -3,7 +3,7 @@ from .schemas import UserCreateSchema,UserResponseSchema,UserUpdateSchema,Change
 from datetime import datetime,timezone
 from .utils.password_utils import hash_password, verify_password
 from bson import ObjectId
-
+from ..shared.constants.user_roles import AUTHOR_ROLE,READER_ROLE
 class UserService:
     @staticmethod
     def create_user(userCreate: UserCreateSchema):
@@ -106,3 +106,47 @@ class UserService:
              return None
         return user
          
+    @staticmethod
+    def get_author_data(user_id):
+        if mongo.db is None:
+            raise Exception("Database connection is not initialized.")
+        try:
+            
+            author = mongo.db.users.find_one({"_id" : user_id})
+            if author.get('role') == READER_ROLE:
+                UserService.promote_user_to_author(user_id)
+                author['role'] = AUTHOR_ROLE
+            return author
+        except:
+            return None
+        
+
+        
+    @staticmethod
+    def promote_user_to_author(user_id):
+        if mongo.db is None:
+            raise Exception("Database connection is not initialized.")
+    
+        try:
+            mongo.db.users.find_one_and_update(
+                {"_id" : user_id},
+                {"$set" : {"role" : AUTHOR_ROLE}}
+            )
+        except Exception as e:
+            #logovanje
+            print(f"Greska pri promociji {e}")
+
+    @staticmethod
+    def inc_recipe_count(user_id):
+        if mongo.db is None:
+            raise Exception("Database connection is not initialized.")
+    
+        try:
+            user = mongo.db.users.find_one_and_update(
+                {"_id" : user_id},
+                {"$inc": {"total_recipes": 1}}
+            )
+            print(user)
+        except Exception as e:
+            #logovanje
+            print(f"Greska pri inc {e}")
