@@ -29,7 +29,11 @@ RECIPES_FETCHED = "Recipes fetched successfully"
 ROLE_REQUESTED_SUCCESSFULLY = "Role requested successfully"
 ROLE_ALREADY_REQUESTED = "Role already requested"
 AUTHOR_REQUESTS_FETCHED = "Author requests fetched successfully"
+REQUEST_ALREDY_REVIEWED = "Request already reviewed"
+REQUEST_NOT_FOUND = "Request not found"
 
 #ADMIN
 USERS_FETCHED = "Users fetched successfully"
 ONLY_ADMIN_ALLOWED = "Only admins allowed"
+REQUEST_SUCCESSFULLY_APROVED = "Request successfully approved"
+AUTHOR_REQUEST_REJECTED = "Request successfully rejected"

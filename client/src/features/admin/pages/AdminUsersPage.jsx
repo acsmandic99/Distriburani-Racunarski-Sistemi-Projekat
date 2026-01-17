@@ -84,7 +84,7 @@ const UsersManagementPage = () => {
                   </span>
                 </td>
                 <td style={{ padding: "12px", textAlign: "right" }}>
-                  {/* Admin ne može da obriše sam sebe */}
+                  {/* Admin ne može da obrise sam sebe */}
                   {(currentUser?.id !== (u.id || u._id)) && (
                     <button 
                       onClick={() => handleDelete(u.id || u._id)}
