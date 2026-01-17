@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../shared/contexts/AuthContext";
 import { getAuthorRequests, processAuthorRequest } from "../services/adminAPI.js"; 
-
+import { approveAuthorRequest, rejectAuthorRequest } from "../services/adminAPI.js";
 const RoleRequestsPage = () => {
   const { user } = useContext(AuthContext);
   const [requests, setRequests] = useState([]);
@@ -25,21 +25,29 @@ const RoleRequestsPage = () => {
     fetchRequests();
   }, []);
 
-  const handleAction = async (requestId, action) => {
-    const confirmMessage = action === 'approve' 
-      ? "Da li ste sigurni da želite da ODOBRITE ovaj zahtev?" 
-      : "Da li ste sigurni da želite da ODBIJETE ovaj zahtev?";
+ const handleApprove = async (requestId) => {
+  try {
+    await approveAuthorRequest(requestId);
+    alert("Korisnik je uspešno postao autor!");
+    // Opciono: Skloni taj zahtev iz liste jer više nije na čekanju
+    setRequests(requests.filter(req => (req.id || req._id) !== requestId));
+  } catch (err) {
+    alert(err.message);
+  }
+};
 
-    if (window.confirm(confirmMessage)) {
-      try {
-        await processAuthorRequest(requestId, action);
-        fetchRequests();
-      } catch (err) {
-        alert("Došlo je do greške prilikom obrade zahteva.");
-        console.error(err);
-      }
+const handleReject = async (requestId) => {
+  if (window.confirm("Da li ste sigurni da želite da odbijete ovaj zahtev?")) {
+    try {
+      await rejectAuthorRequest(requestId);
+      alert("Zahtev je odbijen.");
+      // Skloni zahtev iz liste
+      setRequests(requests.filter(req => (req.id || req._id) !== requestId));
+    } catch (err) {
+      alert(err.message);
     }
-  };
+  }
+};
 
   if (loading) return <p style={{ padding: "2rem" }}>Učitavanje zahteva...</p>;
   if (error) return <p style={{ padding: "2rem", color: "red" }}>{error}</p>;
@@ -81,45 +89,20 @@ const RoleRequestsPage = () => {
                       {req.status}
                     </span>
                   </td>
-                  <td style={{ padding: "12px", textAlign: "center" }}>
-                    {}
-                    {req.status === "pending" ? (
-                      <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
-                        <button 
-                          onClick={() => handleAction(req.id || req._id, "approve")}
-                          style={{ 
-                            backgroundColor: "#28a745", 
-                            color: "white", 
-                            border: "none", 
-                            padding: "6px 12px", 
-                            borderRadius: "4px", 
-                            cursor: "pointer",
-                            fontWeight: "bold"
-                          }}
-                        >
-                          Odobri
-                        </button>
-                        <button 
-                          onClick={() => handleAction(req.id || req._id, "reject")}
-                          style={{ 
-                            backgroundColor: "#dc3545", 
-                            color: "white", 
-                            border: "none", 
-                            padding: "6px 12px", 
-                            borderRadius: "4px", 
-                            cursor: "pointer",
-                            fontWeight: "bold"
-                          }}
-                        >
-                          Odbij
-                        </button>
-                      </div>
-                    ) : (
-                      <span style={{ color: "#888", fontSize: "0.9rem", fontStyle: "italic" }}>
-                        Obrađeno
-                      </span>
-                    )}
-                  </td>
+                  <td style={{ padding: "12px", textAlign: "right" }}>
+  <button 
+    onClick={() => handleApprove(req.id || req._id)}
+    style={{ backgroundColor: "#28a745", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px", cursor: "pointer", marginRight: "5px" }}
+  >
+    Odobri
+  </button>
+  <button 
+    onClick={() => handleReject(req.id || req._id)}
+    style={{ backgroundColor: "#dc3545", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px", cursor: "pointer" }}
+  >
+    Odbij
+  </button>
+</td>
                 </tr>
               ))}
             </tbody>
