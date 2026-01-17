@@ -6,16 +6,13 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
-  // Attach token to API headers
-  if (token) setAuthToken(token);
+
 
   const login = (token) => {
     setToken(token);
     localStorage.setItem("token", token);
-    setAuthToken(token);
-    fetchMe();
   };
 
   const logout = async () => {
@@ -31,19 +28,20 @@ export const AuthProvider = ({ children }) => {
   };
 
   const fetchMe = async () => {
-    if (!token) return;
     try {
       const res = await api.get("/api/v1/auth/me");
       setUser(res.data.data);
     } catch (err) {
       console.error("Failed to fetch user:", err);
-      logout();
     }
   };
 
   useEffect(() => {
-    if (token) fetchMe();
+    if (!token) return;
+    setAuthToken(token);
+    fetchMe();
   }, [token]);
+
 
   return (
     <AuthContext.Provider value={{ user, setUser, login, logout }}>

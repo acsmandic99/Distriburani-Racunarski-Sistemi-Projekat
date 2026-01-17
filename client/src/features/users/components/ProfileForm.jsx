@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { changePassword } from "../services/usersAPI";
 
 const ProfileForm = ({ user, onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -8,7 +9,10 @@ const ProfileForm = ({ user, onSubmit }) => {
     country: user.country || "",
     city: user.city || "",
   });
-
+  const [passwordData, setPasswordData] = useState({
+    old_password: "",
+    new_password: "",
+  });
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(
     user.profile_picture || "",
@@ -25,24 +29,37 @@ const ProfileForm = ({ user, onSubmit }) => {
     }
   }, [avatar, user.profile_picture]);
 
-  const handleChange = (e) => {
+  const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  const handlePasswordChange = (e) => {
+    setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.first_name || !formData.last_name) {
-      setMessage("First and last name are required");
-      return;
+  e.preventDefault();
+  setMessage("");
+
+  try {
+    // update profila
+    await onSubmit(formData, avatar);
+
+    if (passwordData.old_password && passwordData.new_password) {
+      await changePassword(
+        passwordData.old_password,
+        passwordData.new_password
+      );
     }
-    try {
-      if (onSubmit) {
-        await onSubmit(formData, avatar);
-      }
-    } catch {
-      setMessage("Update failed");
-    }
-  };
+
+    setMessage("Profile updated successfully");
+    setPasswordData({ old_password: "", new_password: "" });
+  } catch (err) {
+    console.error("CHANGE PASSWORD ERROR:", err.response?.data);
+  setMessage(
+    err.response?.data?.message || "Update failed")
+  }
+};
+
 
   return (
     <form onSubmit={handleSubmit}>
@@ -64,7 +81,7 @@ const ProfileForm = ({ user, onSubmit }) => {
         name="first_name"
         placeholder="First name"
         value={formData.first_name}
-        onChange={handleChange}
+        onChange={handleFormChange}
         required
       />
 
@@ -72,24 +89,40 @@ const ProfileForm = ({ user, onSubmit }) => {
         name="last_name"
         placeholder="Last name"
         value={formData.last_name}
-        onChange={handleChange}
+        onChange={handleFormChange}
         required
       />
 
       <input name="email" value={formData.email} disabled />
 
       <input
+        type="password"
+        name="old_password"
+        placeholder="Current password"
+        value={passwordData.old_password}
+        onChange={handlePasswordChange}
+      />
+
+      <input
+        type="password"
+        name="new_password"
+        placeholder="New password"
+        value={passwordData.new_password}
+        onChange={handlePasswordChange}
+      />
+
+      <input
         name="country"
         placeholder="Country"
         value={formData.country}
-        onChange={handleChange}
+        onChange={handleFormChange}
       />
 
       <input
         name="city"
         placeholder="City"
         value={formData.city}
-        onChange={handleChange}
+        onChange={handleFormChange}
       />
 
       <button type="submit">Save</button>
