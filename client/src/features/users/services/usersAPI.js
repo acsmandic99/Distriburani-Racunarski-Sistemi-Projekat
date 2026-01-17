@@ -1,4 +1,5 @@
 import api from "../../shared/services/api/api";
+
 export const updateProfile = async (data, avatar) => {
   const formData = new FormData();
   Object.entries(data).forEach(([key, value]) => {
@@ -13,4 +14,18 @@ export const updateProfile = async (data, avatar) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return response.data.data;
+};
+
+export const requestAuthorRole = async () => {
+  try {
+    const response = await api.post(
+      "/api/v1/author_managment/request-author-role/",
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.message || "Something went wrong");
+    }
+    throw error;
+  }
 };

@@ -28,7 +28,7 @@ def create_app() -> Flask:
     app.register_blueprint(users_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(recipes_bp)
-    app.register_blueprint(author_managment_bp)
+    app.register_blueprint(author_managment_bp, url_prefix="/api/v1/author_managment")
     app.register_blueprint(admin_bp)
     #with app.app_context():
         #print(f"{'Endpoint':<40} {'Methods':<20} {'Rule'}")
