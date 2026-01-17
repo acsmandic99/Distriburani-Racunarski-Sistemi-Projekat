@@ -29,3 +29,10 @@ export const requestAuthorRole = async () => {
     throw error;
   }
 };
+export const changePassword = async (currentPassword, newPassword) => {
+  const response = await api.post("/api/v1/users/change-password/", {
+    old_password: currentPassword,
+    new_password: newPassword,
+  });
+  return response.data.data;
+};
