@@ -29,7 +29,6 @@ const RoleRequestsPage = () => {
   try {
     await approveAuthorRequest(requestId);
     alert("Korisnik je uspešno postao autor!");
-    // Opciono: Skloni taj zahtev iz liste jer više nije na čekanju
     setRequests(requests.filter(req => (req.id || req._id) !== requestId));
   } catch (err) {
     alert(err.message);
@@ -41,7 +40,6 @@ const handleReject = async (requestId) => {
     try {
       await rejectAuthorRequest(requestId);
       alert("Zahtev je odbijen.");
-      // Skloni zahtev iz liste
       setRequests(requests.filter(req => (req.id || req._id) !== requestId));
     } catch (err) {
       alert(err.message);
