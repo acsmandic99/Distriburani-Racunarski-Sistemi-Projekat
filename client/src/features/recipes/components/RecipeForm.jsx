@@ -70,21 +70,21 @@ const RecipeForm = ({ onSubmit }) => {
     <form className="recipe-form" onSubmit={handleSubmit}>
       <input
         name="title"
-        placeholder="Recipe title"
+        placeholder="Ime recepta"
         value={formData.title}
         onChange={handleChange}
         required
       />
       <input
         name="type_of_dish"
-        placeholder="Type of dish"
+        placeholder="Vrsta jela"
         value={formData.type_of_dish}
         onChange={handleChange}
         required
       />
       <input
         name="time_for_preperation"
-        placeholder="Time for preparation"
+        placeholder="Vreme pripreme"
         value={formData.time_for_preperation}
         onChange={handleChange}
         required
@@ -101,7 +101,7 @@ const RecipeForm = ({ onSubmit }) => {
       <input
         type="number"
         name="number_of_people"
-        placeholder="Number of people"
+        placeholder="Broj ljudi"
         value={formData.number_of_people}
         onChange={handleChange}
         min={1}
@@ -109,7 +109,7 @@ const RecipeForm = ({ onSubmit }) => {
       />
 
       <div className="form-section">
-        <label>Ingredients:</label>
+        <label>Sastojci</label>
         {formData.ingredients.map((ing, i) => (
           <div className="array-item" key={i}>
             <input
@@ -132,7 +132,7 @@ const RecipeForm = ({ onSubmit }) => {
       </div>
 
       <div className="form-section">
-        <label>Steps:</label>
+        <label>Koraci:</label>
         {formData.steps.map((step, i) => (
           <div className="array-item" key={i}>
             <input

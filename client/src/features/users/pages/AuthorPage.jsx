@@ -19,7 +19,7 @@ const AuthorPage = () => {
 
   if (!user) return null;
 
-  const isAuthor = user.role === "author";
+  const isAuthor = user.role === "author" || user.role === "admin";
 
   const canRequest = !isAuthor && !user.author_request_pending;
 
@@ -57,7 +57,7 @@ const AuthorPage = () => {
 
         {!isAuthor ? (
           <div className="author-info">
-            <p>You cannot post recipes without being an author.</p>
+            <p>Morate biti autor da bi ste dodavali nove recepte</p>
             <button
               onClick={handleRequestAuthor}
               disabled={!canRequest || loading}
@@ -73,7 +73,7 @@ const AuthorPage = () => {
           </div>
         ) : (
           <div className="author-info">
-            <p>Welcome, author! Fill in the form below to add a new recipe:</p>
+            <p>Dobrodosli! Ispunite formu da dodate novi recept:</p>
             <RecipeForm onSubmit={handleAddRecipe} />
           </div>
         )}
