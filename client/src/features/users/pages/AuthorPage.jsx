@@ -1,18 +1,27 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../shared/contexts/AuthContext";
 import { requestAuthorRole } from "../services/usersAPI";
+import { addRecipe } from "../../recipes/services/recipesAPI";
+import RecipeForm from "../../recipes/components/RecipeForm";
 import { useNavigate } from "react-router-dom";
 import "../components/Author.css";
 
 const AuthorPage = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, fetchMe } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Refresh user info from backend on page load
+    fetchMe();
+  }, []);
+
   if (!user) return null;
 
-  const canRequest = !user.is_author && !user.author_request_pending;
+  const isAuthor = user.role === "author";
+
+  const canRequest = !isAuthor && !user.author_request_pending;
 
   const handleRequestAuthor = async () => {
     if (!canRequest) return;
@@ -31,12 +40,22 @@ const AuthorPage = () => {
     }
   };
 
+  const handleAddRecipe = async (data, image) => {
+    try {
+      await addRecipe(data, image);
+      alert("Recipe added successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add recipe: " + (err.message || "Unknown error"));
+    }
+  };
+
   return (
     <div className="author-page">
       <div className="author-container">
         <h1>Author Dashboard</h1>
 
-        {!user.is_author ? (
+        {!isAuthor ? (
           <div className="author-info">
             <p>You cannot post recipes without being an author.</p>
             <button
@@ -54,10 +73,8 @@ const AuthorPage = () => {
           </div>
         ) : (
           <div className="author-info">
-            <p>Welcome, author! You can now post new recipes.</p>
-            <button onClick={() => navigate("/recipes/new")}>
-              Add New Recipe
-            </button>
+            <p>Welcome, author! Fill in the form below to add a new recipe:</p>
+            <RecipeForm onSubmit={handleAddRecipe} />
           </div>
         )}
       </div>
