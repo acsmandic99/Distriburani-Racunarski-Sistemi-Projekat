@@ -36,3 +36,16 @@ def get_recipe_comments(recipe_id):
     except Exception as e:
         print(e)
         return api_response.error(messages.INTERNAL_ERROR,500)
+    
+@comment_bp.route("/<comment_id>",methods=["DELETE"])
+@jwt_required()
+def delete_comment(comment_id):
+    try:
+        user_id = get_jwt_identity()
+        CommentService.delete_comment(user_id,comment_id)
+        return api_response.success(messages.COMMENT_DELETED,status=200)
+    except ValueError as e:
+        return api_response.error(str(e),400)
+    except Exception as e:
+        print(e)
+        return api_response.error(messages.INTERNAL_ERROR,500)

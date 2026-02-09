@@ -37,8 +37,9 @@ class CommentService:
 
         inserted_comment = mongo.db.comments.insert_one(new_comment.model_dump())
         
-        
-        RecipeService.add_comment(recipe_id,new_comment)
+        comment_data_for_recipe = new_comment.model_dump()
+        comment_data_for_recipe["_id"] = str(inserted_comment.inserted_id)
+        RecipeService.add_comment(recipe_id,comment_data_for_recipe)
         response_comment_data = new_comment.model_dump(mode='json')
         response_comment_data["_id"] = str(inserted_comment.inserted_id)
         return response_comment_data
@@ -65,3 +66,18 @@ class CommentService:
             comments.append(c)
             
         return comments
+    
+    @staticmethod
+    def delete_comment(user_id,comment_id):
+        from ..recipes.services import RecipeService
+        oid = ObjectId(comment_id)
+        comment = mongo.db.comments.find_one({"_id": oid})
+        
+        if not comment:
+            raise ValueError(messages.COMMENT_NOT_FOUND)
+
+        if comment['comment_author']['author_id'] != str(user_id):
+            raise ValueError(messages.NOT_COMMENT_AUTHOR)
+        mongo.db.comments.delete_one({"_id": oid})
+
+        RecipeService.remove_comment(comment['recipe_id'], comment_id)

@@ -58,13 +58,13 @@ class RecipeService:
         return recipes
     
     @staticmethod
-    def add_comment(recipe_id,new_comment : CommentSchema):
+    def add_comment(recipe_id, new_comment_data): 
         mongo.db.recipes.update_one(
             {"_id": ObjectId(recipe_id)},
             {
                 "$push": {
                     "latest_comments": {
-                        "$each": [new_comment.model_dump()],
+                        "$each": [new_comment_data], 
                         "$position": 0,
                         "$slice": 10
                     }
@@ -75,8 +75,16 @@ class RecipeService:
 
     @staticmethod
     def recipe_exists(recipe_id):
-        recipe = mongo.db.recipes.find({"_id" : recipe_id})
-        if not recipe:
-            return False
-        return True
+        recipe = mongo.db.recipes.find_one({"_id" : ObjectId(recipe_id)}, {"_id": 1})
+        return recipe is not None 
         
+
+    @staticmethod
+    def remove_comment(recipe_id, comment_id):
+        mongo.db.recipes.update_one(
+            {"_id": ObjectId(recipe_id)},
+            {
+                "$pull": {"latest_comments": {"_id": comment_id}},
+                "$inc": {"comment_count": -1}
+            }
+        )
