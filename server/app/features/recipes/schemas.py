@@ -1,5 +1,4 @@
 from pydantic import BaseModel,Field
-from datetime import datetime
 from typing import Optional,List
 
 
@@ -21,19 +20,19 @@ class AuthorInfoSchema(BaseModel):
     """
     Polja koja cuvamo unutar recepta u mongodb
     """
+    author_id: Optional[str] = None
     first_name: str
     last_name: str
-    total_recipes:int
-    average_rating:float
 
 class FullRecipeSchema(RecipeCreateSchema):
     """
     Puna sema za kreiranje recepta
     """
     author: AuthorInfoSchema
-    comments: List[dict] = []
+    latest_comments: List[dict] = []
     average_rating: float = 0.0
     total_recipe_ratings: int = 0
 
 
 
+ 

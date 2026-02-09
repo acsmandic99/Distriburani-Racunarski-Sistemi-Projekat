@@ -1,3 +1,4 @@
+from ..comments.schemas import CommentSchema
 from .schemas import RecipeCreateSchema,FullRecipeSchema,AuthorInfoSchema
 from ..users.services import UserService 
 from ..shared.utils.image_service.service import ImageService
@@ -18,7 +19,12 @@ class RecipeService:
             raise ValueError(messages.AUTHOR_NOT_EXIST)
         if raw_author['role'] == READER_ROLE:
             raise ValueError(messages.NOT_AUTHOR)
-        author_info = AuthorInfoSchema(**raw_author)
+        
+        author_info = AuthorInfoSchema(
+            author_id=str(oid),
+            first_name=raw_author['first_name'],
+            last_name=raw_author['last_name']
+        )
 
         if image_file:
             image_url = ImageService.upload_image(image_file,RECIPES_FOLDER)
@@ -33,7 +39,6 @@ class RecipeService:
 
         result = mongo.db.recipes.insert_one(full_recipe.model_dump())
         UserService.inc_recipe_count(oid)
-        full_recipe.author.total_recipes += 1
         return {**full_recipe.model_dump(), "_id": str(result.inserted_id)}
     
     @staticmethod
@@ -51,3 +56,27 @@ class RecipeService:
             recipes.append(r)
 
         return recipes
+    
+    @staticmethod
+    def add_comment(recipe_id,new_comment : CommentSchema):
+        mongo.db.recipes.update_one(
+            {"_id": ObjectId(recipe_id)},
+            {
+                "$push": {
+                    "latest_comments": {
+                        "$each": [new_comment.model_dump()],
+                        "$position": 0,
+                        "$slice": 10
+                    }
+                },
+                "$inc": {"comment_count": 1}
+            }
+        )
+
+    @staticmethod
+    def recipe_exists(recipe_id):
+        recipe = mongo.db.recipes.find({"_id" : recipe_id})
+        if not recipe:
+            return False
+        return True
+        

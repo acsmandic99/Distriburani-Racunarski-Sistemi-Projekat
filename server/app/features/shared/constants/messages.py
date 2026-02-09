@@ -37,3 +37,10 @@ USERS_FETCHED = "Users fetched successfully"
 ONLY_ADMIN_ALLOWED = "Only admins allowed"
 REQUEST_SUCCESSFULLY_APROVED = "Request successfully approved"
 AUTHOR_REQUEST_REJECTED = "Request successfully rejected"
+
+#Comment
+COMMENT_ADDED_SUCCESSFULLY = "Comment successfully added"
+COMMENT_DELETED = "Comment successfully deleted"
+RECIPE_ID_MISSING = "Recipe ID is required"
+RECIPE_ID_NOT_FOUND = "Recipe ID not found"
+COMMENTS_FETCHED = "Comments fetched successfully"
