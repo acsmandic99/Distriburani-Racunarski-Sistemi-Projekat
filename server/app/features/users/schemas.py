@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field,field_validator, EmailStr
 from datetime import datetime
-from typing import Optional
+from typing import Optional,List
 
 
 
@@ -64,6 +64,21 @@ class UserResponseSchema(BaseModel):
         "from_attributes": True
     }
 
+
+class AuthorDataResponse(BaseModel):
+    id: str
+    first_name: str
+    last_name: str
+    country: Optional[str] = None
+    city: Optional[str] = None
+    created_at: datetime
+    total_recipes: int = 0
+    average_rating: float = 0.0
+    recipes: List[dict] = []
+
+    model_config = {
+        "from_attributes": True
+    }
 
 class ChangePasswordSchema(BaseModel):
     old_password: str

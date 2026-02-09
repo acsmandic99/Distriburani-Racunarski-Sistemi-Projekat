@@ -109,5 +109,19 @@ def change_password():
         #logovanje
         print(e)
         return api_response.error(messages.INTERNAL_ERROR, 500)
-    
 
+@users_bp.route("/author-profile/<author_id>", methods=["GET"])
+def get_author_profile_new(author_id):
+    try:
+        profile = UserService.get_author_profile_final(author_id)
+        
+        return api_response.success(
+            messages.USER_FETCHED, 
+            profile, 
+            200
+        )
+    except ValueError as e:
+        return api_response.error(str(e), 404)
+    except Exception as e:
+        print(f"DEBUG ERROR: {e}") 
+        return api_response.error(messages.INTERNAL_ERROR, 500)

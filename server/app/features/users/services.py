@@ -1,5 +1,5 @@
 from app.extensions import mongo
-from .schemas import UserCreateSchema,UserResponseSchema,UserUpdateSchema,ChangePasswordSchema,AuthorRequestSchema
+from .schemas import AuthorDataResponse, UserCreateSchema,UserResponseSchema,UserUpdateSchema,ChangePasswordSchema,AuthorRequestSchema
 from datetime import datetime,timezone
 from .utils.password_utils import hash_password, verify_password
 from bson import ObjectId
@@ -213,3 +213,25 @@ class UserService:
     def get_favorite_ids(user_id):
         user = mongo.db.users.find_one({"_id": ObjectId(user_id)}, {"favorite_recipes": 1})
         return user.get("favorite_recipes", []) if user else []
+    
+
+    @staticmethod
+    def get_author_profile_final(author_id):
+        from ..recipes.services import RecipeService
+        
+        author_raw = mongo.db.users.find_one({"_id": ObjectId(author_id)})
+        
+        if not author_raw:
+            raise ValueError(messages.USER_NOT_FOUND)
+
+        author_raw['id'] = str(author_raw.pop('_id'))
+
+        author_recipes = RecipeService.get_all_recipes(
+            filter_query={"author.author_id": str(author_id)}
+        )
+        author_raw['recipes'] = author_recipes
+
+
+        validated_data = AuthorDataResponse(**author_raw)
+        
+        return validated_data.model_dump(mode='json')
