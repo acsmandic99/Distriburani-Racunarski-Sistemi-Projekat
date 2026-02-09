@@ -46,3 +46,9 @@ RECIPE_ID_NOT_FOUND = "Recipe ID not found"
 COMMENTS_FETCHED = "Comments fetched successfully"
 NOT_COMMENT_AUTHOR = "User did not create comment"
 COMMENT_NOT_FOUND = "Comment was not found"
+
+
+#Favourites
+ADDED_TO_FAVORITES = "Recipe added to favourites successfully"
+REMOVED_FROM_FAVORUTIES = "Recipe removed from favoruites successfully"
+FAVOURITES_FETCHED_SUCCESSFULLY = "Favourite recipes fetched successfully"

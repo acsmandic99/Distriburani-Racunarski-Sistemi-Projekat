@@ -1,12 +1,11 @@
-from .schemas import UserCreateSchema, UserResponseSchema, UserUpdateSchema, ChangePasswordSchema
+from .schemas import UserCreateSchema, ChangePasswordSchema
 from pydantic import ValidationError
 from .services import UserService
 from app.features.shared.utils import api_response
 from app.features.shared.constants import messages
-from flask import request, current_app
+from flask import request
 from . import users_bp
 from flask_jwt_extended import jwt_required, get_jwt_identity
-import os
 
 
 @users_bp.route("/register", methods=["POST"])

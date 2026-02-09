@@ -88,3 +88,19 @@ class RecipeService:
                 "$inc": {"comment_count": -1}
             }
         )
+
+    @staticmethod
+    def get_recipes_by_ids(recipe_ids):
+        if not recipe_ids:
+            return []
+
+        oids = [ObjectId(rid) for rid in recipe_ids]
+        
+        cursor = mongo.db.recipes.find({"_id": {"$in": oids}})
+        
+        recipes = []
+        for r in cursor:
+            r["_id"] = str(r["_id"])
+            recipes.append(r)
+            
+        return recipes

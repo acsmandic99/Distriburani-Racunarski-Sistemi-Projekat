@@ -190,3 +190,26 @@ class UserService:
         mongo.db.users.delete_one({"_id": user_id})
         
         return True
+    @staticmethod
+    def toggle_favorite_recipe(user_id, recipe_id):
+        u_id = ObjectId(user_id)
+        r_id = str(recipe_id)
+
+        result = mongo.db.users.update_one(
+            {"_id": u_id},
+            {"$pull": {"favorite_recipes": r_id}}
+        )
+
+        if result.modified_count == 0:
+            mongo.db.users.update_one(
+                {"_id": u_id},
+                {"$addToSet": {"favorite_recipes": r_id}}
+            )
+            return "added"
+        
+        return "removed"
+
+    @staticmethod
+    def get_favorite_ids(user_id):
+        user = mongo.db.users.find_one({"_id": ObjectId(user_id)}, {"favorite_recipes": 1})
+        return user.get("favorite_recipes", []) if user else []
