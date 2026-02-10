@@ -36,7 +36,7 @@ def delete_review(review_id):
         return api_response.error(str(e), 404)
     except Exception as e:
         print(f"DELETE_REVIEW_ERROR: {e}")
-        return api_response.error(messages.INTERNAL_ERROR, 500)\
+        return api_response.error(messages.INTERNAL_ERROR, 500)
         
 
 @reviews_bp.route("/<review_id>", methods=["PATCH"])
