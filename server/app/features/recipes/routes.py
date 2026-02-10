@@ -59,3 +59,24 @@ def get_recipes():
             )
     except Exception as e:
         return api_response.error(message=str(e), status=500)
+    
+@recipes_bp.route("/<recipe_id>",methods= ["GET"])
+def get_recipe_by_id(recipe_id):
+    try:
+        recipe = RecipeService.get_recipe_by_id(recipe_id)
+        if recipe is None:
+            return api_response.error(messages.RECIPE_ID_NOT_FOUND,404)
+        return api_response.success(messages.RECIPE_FETCHED,recipe,200)
+    except ValidationError as e:
+        custom_errors = []
+        for error in e.errors():
+            custom_errors.append({
+                "field": error["loc"][-1], 
+                "message": error["msg"]      
+            })
+        return api_response.error(messages.INVALID_DATA, 400, custom_errors)
+    except ValueError as e:
+        return api_response.error(messages.INVALID_DATA,400,str(e))
+    except Exception as e:
+        print(e)
+        return api_response.error(messages.INTERNAL_ERROR, 500)

@@ -50,13 +50,16 @@ const RecipesPage = () => {
       <div className="recipes-grid">
         {" "}
         {recipes.length > 0 ? (
-          recipes.map((recipe) => (
-            <Recipe
-              key={recipe._id}
-              recipe={recipe}
-              onRate={handleRateRecipe}
-            />
-          ))
+          recipes.map((recipe) => {
+            console.log(recipe);
+            return (
+              <Recipe
+                key={recipe._id}
+                recipe={recipe}
+                onRate={handleRateRecipe}
+              />
+            );
+          })
         ) : (
           <p>Trenutno nema objavljenih recepata.</p>
         )}

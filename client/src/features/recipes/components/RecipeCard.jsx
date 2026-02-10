@@ -8,9 +8,9 @@ const RecipeCard = ({ recipe }) => {
       <h3>{recipe.title}</h3>
       <p>Type: {recipe.type_of_dish}</p>
       <p>Prep time: {recipe.time_for_preperation}</p>
-      <p>
+      <Link to={`/author/${recipe.author.author_id}`}>
         Author: {recipe.author.first_name} {recipe.author.last_name}
-      </p>
+      </Link>
       <Link to={`/recipes/${recipe._id}`} state={{ recipe }}>
         View details
       </Link>

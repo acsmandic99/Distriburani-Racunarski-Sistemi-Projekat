@@ -1,4 +1,4 @@
-from ...extensions import mongo
+from ...extensions import mongo, socketio
 from bson import ObjectId
 from ..shared.constants import messages
 from ..shared.constants.author_request_status import AUTHOR_REQUEST_PENDING,AUTHOR_REQUEST_APPROVED,AUTHOR_REQUEST_REJECTED
@@ -24,6 +24,12 @@ class AuthorManagmentService:
             "created_at" : datetime.now(timezone.utc)
         }
         result = mongo.db.author_requests.insert_one(new_request)
+        socketio.emit('new_author_request', {
+        '_id': str(result.inserted_id),
+        'user_id' : str(new_request['user_id']),
+        'status' : new_request['status'],
+        'created_at': new_request['created_at'].strftime("%Y-%m-%d %H:%M:%S")
+        })
         return True
 
         
@@ -33,6 +39,7 @@ class AuthorManagmentService:
         for req in requests:
             req["_id"] = str(req["_id"])
             req["user_id"] = str(req["user_id"])
+            req["created_at"] = req["created_at"].strftime("%Y-%m-%d %H:%M:%S")
         return requests
     
     @staticmethod

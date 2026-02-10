@@ -11,9 +11,10 @@ bcrypt = "*"
 flask-cors = "*"
 pydantic = {extras = ["email"], version = "*"}
 flask-pymongo = "*"
-flask-socketio = "*"
 flask-jwt-extended = "*"
 mailtrap = "*"
+flask-socketio = "*"
+redis = "*"
 
 [dev-packages]
 

@@ -1,12 +1,16 @@
 import React, { useContext, useState, useEffect } from "react";
+import { io } from "socket.io-client";
 import { AuthContext } from "../../shared/contexts/AuthContext";
 import { getAuthorRequests, processAuthorRequest } from "../services/adminAPI.js"; 
 import { approveAuthorRequest, rejectAuthorRequest } from "../services/adminAPI.js";
+
 const RoleRequestsPage = () => {
   const { user } = useContext(AuthContext);
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+
 
   const fetchRequests = async () => {
     try {
@@ -23,6 +27,15 @@ const RoleRequestsPage = () => {
 
   useEffect(() => {
     fetchRequests();
+    const socket = io("http://localhost:5000");
+
+    socket.on("new_author_request", (newRequest) => {
+      setRequests((prevRequests) => [newRequest, ...prevRequests]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
  const handleApprove = async (requestId) => {

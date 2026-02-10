@@ -24,6 +24,8 @@ RECIPE_CREATED = "Recipe created successfully"
 AUTHOR_NOT_EXIST = "Author doesnt exist"
 NOT_AUTHOR = "You are not yet author,request from admin to change your role!"
 RECIPES_FETCHED = "Recipes fetched successfully"
+RECIPE_FETCHED = "Recipe fetched successfully"
+
 
 #AUTHOR MANAGMENT
 ROLE_REQUESTED_SUCCESSFULLY = "Role requested successfully"
