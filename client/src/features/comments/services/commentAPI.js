@@ -1,12 +1,14 @@
-import axios from "axios";
+import api from "../../shared/services/api/api";
 
 export const getCommentsForRecipe = async (recipeId, skip = 0, limit = 10) => {
-  const res = await axios.get(`/comments/${recipeId}?skip=${skip}&limit=${limit}`);
+  const res = await api.get(
+    `/api/v1/comments/${recipeId}?skip=${skip}&limit=${limit}`,
+  );
   return res.data.data || [];
 };
 
 export const addComment = async (formData) => {
-  const res = await axios.post("/comments/add-comment", formData, {
+  const res = await api.post("/api/v1/comments/add-comment", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -15,6 +17,6 @@ export const addComment = async (formData) => {
 };
 
 export const deleteComment = async (commentId) => {
-  const res = await axios.delete(`/comments/${commentId}`);
+  const res = await api.delete(`/api/v1/comments/${commentId}`);
   return res.data;
 };

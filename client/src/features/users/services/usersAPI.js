@@ -40,7 +40,6 @@ export const changePassword = async (currentPassword, newPassword) => {
 export const getAuthorProfile = async (authorId) => {
   try {
     const response = await api.get(`/api/v1/users/author-profile/${authorId}`);
-    console.log("Author profile response:", response.data);
     return response.data.data;
   } catch (error) {
     if (error.response && error.response.data) {

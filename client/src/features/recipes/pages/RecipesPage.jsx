@@ -51,7 +51,6 @@ const RecipesPage = () => {
         {" "}
         {recipes.length > 0 ? (
           recipes.map((recipe) => {
-            console.log(recipe);
             return (
               <Recipe
                 key={recipe._id}
