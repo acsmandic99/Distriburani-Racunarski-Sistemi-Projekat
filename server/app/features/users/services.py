@@ -8,7 +8,6 @@ from ..shared.constants.author_request_status import AUTHOR_REQUEST_PENDING
 from ..shared.constants import messages
 from ..shared.utils.image_service.service import ImageService
 from ..shared.utils.image_service.folders import PROFILE_IMAGE_FOLDER
-
 class UserService:
     @staticmethod
     def create_user(userCreate: UserCreateSchema):
@@ -235,3 +234,77 @@ class UserService:
         validated_data = AuthorDataResponse(**author_raw)
         
         return validated_data.model_dump(mode='json')
+    
+
+    @staticmethod
+    def _update_author_average_rating(author_id, new_rating):
+        """
+        Azurira prosek autora
+        """
+        a_id = ObjectId(author_id)
+        
+        author = mongo.db.users.find_one(
+            {"_id": a_id}, 
+            {"average_rating": 1, "total_ratings": 1}
+        )
+        
+        if not author:
+            return
+
+        old_avg = author.get("average_rating", 0.0)
+        old_count = author.get("total_ratings", 0)
+
+        new_count = old_count + 1
+        new_avg = ((old_avg * old_count) + new_rating) / new_count
+
+        mongo.db.users.update_one(
+            {"_id": a_id},
+            {
+                "$set": {
+                    "average_rating": round(new_avg, 2),
+                    "total_ratings": new_count
+                }
+            }
+        )
+
+    @staticmethod
+    def _update_author_on_review_delete(author_id, removed_rating):
+        a_id = ObjectId(author_id)
+        author = mongo.db.users.find_one({"_id": a_id}, {"average_rating": 1, "total_ratings": 1})
+        
+        if not author or author.get("total_ratings", 0) <= 0:
+            return
+
+        old_avg = author.get("average_rating", 0.0)
+        old_count = author.get("total_ratings", 0)
+
+        if old_count == 1:
+            new_avg = 0.0
+            new_count = 0
+        else:
+            new_count = old_count - 1
+            new_avg = ((old_avg * old_count) - removed_rating) / new_count
+
+        mongo.db.users.update_one(
+            {"_id": a_id},
+            {"$set": {"average_rating": round(new_avg, 2), "total_ratings": new_count}}
+        )
+
+
+    @staticmethod
+    def _update_author_on_review_patch(author_id, old_rating, new_rating):
+        a_id = ObjectId(author_id)
+        author = mongo.db.users.find_one({"_id": a_id}, {"average_rating": 1, "total_ratings": 1})
+        
+        if not author or author.get("total_ratings", 0) == 0:
+            return
+
+        old_avg = author.get("average_rating", 0.0)
+        count = author.get("total_ratings")
+
+        new_avg = ((old_avg * count) - old_rating + new_rating) / count
+
+        mongo.db.users.update_one(
+            {"_id": a_id},
+            {"$set": {"average_rating": round(new_avg, 2)}}
+        )

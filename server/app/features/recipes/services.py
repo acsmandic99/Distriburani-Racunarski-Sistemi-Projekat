@@ -75,8 +75,11 @@ class RecipeService:
 
     @staticmethod
     def recipe_exists(recipe_id):
-        recipe = mongo.db.recipes.find_one({"_id" : ObjectId(recipe_id)}, {"_id": 1})
-        return recipe is not None 
+        try:
+            recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)}, {"_id": 1})
+            return recipe is not None
+        except Exception:
+            return False
         
 
     @staticmethod
@@ -104,3 +107,98 @@ class RecipeService:
             recipes.append(r)
             
         return recipes
+    
+    @staticmethod
+    def get_recipe_by_id(recipe_id):
+        r_id = ObjectId(recipe_id)
+        recipe = mongo.db.recipes.find_one({"_id": r_id})
+        return recipe
+
+    @staticmethod
+    def _update_recipe_stats_and_subset(recipe_id, review_doc):
+        """Azurira prosek recepta i dodaje review u listu poslednjih 10."""
+        recipe = mongo.db.recipes.find_one({"_id": recipe_id})
+        
+        old_count = recipe.get("total_recipe_ratings", 0)
+        old_avg = recipe.get("average_rating", 0.0)
+        new_rating = review_doc["rating"]
+
+        new_count = old_count + 1
+        new_avg = ((old_avg * old_count) + new_rating) / new_count
+
+        subset_review = {
+            "review_id": str(review_doc["_id"]),
+            "user_id": str(review_doc["user_id"]),
+            "rating": new_rating,
+            "body": review_doc["body"],
+            "created_at": review_doc["created_at"]
+        }
+
+        mongo.db.recipes.update_one(
+            {"_id": recipe_id},
+            {
+                "$set": {
+                    "average_rating": round(new_avg, 2),
+                    "total_recipe_ratings": new_count
+                    },
+                "$push": {
+                    "latest_reviews": {
+                        "$each": [subset_review],
+                        "$position": 0, 
+                        "$slice": 10   
+                    }
+                }
+            }
+        )
+
+    @staticmethod
+    def _update_recipe_on_review_delete(recipe_id, review_id, removed_rating):
+        recipe = mongo.db.recipes.find_one({"_id": recipe_id}, {"average_rating": 1, "total_recipe_ratings": 1})
+        
+        if not recipe:
+            return
+
+        old_avg = recipe.get("average_rating", 0.0)
+        old_count = recipe.get("total_recipe_ratings", 0)
+
+        if old_count <= 1:
+            new_avg = 0.0
+            new_count = 0
+        else:
+            new_count = old_count - 1
+            new_avg = ((old_avg * old_count) - removed_rating) / new_count
+
+        mongo.db.recipes.update_one(
+            {"_id": recipe_id},
+            {
+                "$set": {
+                    "average_rating": round(new_avg, 2),
+                    "total_recipe_ratings": new_count
+                },
+                "$pull": {"latest_reviews": {"review_id": str(review_id)}}
+            }
+        )
+
+
+    @staticmethod
+    def _update_recipe_on_review_patch(recipe_id, review_id, old_rating, new_rating, new_body):
+        recipe = mongo.db.recipes.find_one({"_id": recipe_id}, {"average_rating": 1, "total_recipe_ratings": 1})
+        if not recipe:
+            return
+
+        old_avg = recipe.get("average_rating", 0.0)
+        count = recipe.get("total_recipe_ratings", 0)
+
+        new_avg = ((old_avg * count) - old_rating + new_rating) / count
+
+        mongo.db.recipes.update_one(
+            {"_id": recipe_id},
+            {
+                "$set": {
+                    "average_rating": round(new_avg, 2),
+                    "latest_reviews.$[elem].rating": new_rating,
+                    "latest_reviews.$[elem].body": new_body
+                }
+            },
+            array_filters=[{"elem.review_id": str(review_id)}]
+        )

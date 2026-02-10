@@ -52,3 +52,12 @@ COMMENT_NOT_FOUND = "Comment was not found"
 ADDED_TO_FAVORITES = "Recipe added to favourites successfully"
 REMOVED_FROM_FAVORUTIES = "Recipe removed from favoruites successfully"
 FAVOURITES_FETCHED_SUCCESSFULLY = "Favourite recipes fetched successfully"
+
+
+#Reviews
+ALREADY_REVIEWED = "User already reviewed this recipe"
+REVIEW_NOT_FOUND = "Review not found"
+REVIEW_DELETED = "Review deleted successfully"
+REVIEW_ADDED = "Review added successfully"
+CANT_REVIEW_SELF = "You cant review your own recipe"
+REWVIEW_EDIT_SUCCESSFULLY = "Review was edited successfully"

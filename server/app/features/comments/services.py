@@ -12,7 +12,7 @@ class CommentService:
         recipe_id = raw_data.get('recipe_id')
         if not recipe_id:
             raise ValueError(messages.RECIPE_ID_MISSING)
-        if RecipeService.recipe_exists(recipe_id) is None:
+        if not RecipeService.recipe_exists(recipe_id):
             raise ValueError(messages.RECIPE_ID_NOT_FOUND)
 
         author_data = UserService.get_author_data(ObjectId(user_id))

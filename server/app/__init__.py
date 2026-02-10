@@ -6,6 +6,7 @@ from .features.author_managment import author_managment_bp
 from .features.admin import admin_bp
 from .features.comments import comment_bp
 from .features.favourites import favourites_bp
+from .features.reviews import reviews_bp
 from .extensions import mongo, cors,jwt
 from .test_db import test_connection
 from datetime import timedelta
@@ -41,6 +42,7 @@ def create_app() -> Flask:
     app.register_blueprint(admin_bp)
     app.register_blueprint(comment_bp)
     app.register_blueprint(favourites_bp)
+    app.register_blueprint(reviews_bp)
     #with app.app_context():
         #print(f"{'Endpoint':<40} {'Methods':<20} {'Rule'}")
         #print("-" * 80)

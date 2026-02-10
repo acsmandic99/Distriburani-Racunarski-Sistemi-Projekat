@@ -20,6 +20,7 @@ class UserCreateSchema(BaseModel):
     role: str = "reader"
     total_recipes:int = 0
     average_rating: float = 0.0
+    total_ratings: int = 0
 
 
     @field_validator("date_of_birth")
