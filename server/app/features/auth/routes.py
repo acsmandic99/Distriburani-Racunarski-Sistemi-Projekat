@@ -15,6 +15,9 @@ def login():
         login_data = LoginSchema(**request.get_json())
         token = AuthService.login(login_data.email, login_data.password)
         
+        if token == "BLOCKED":
+            return api_response.error(messages.TOO_MANY_WRONG_ATTEMPTS, 403)
+
         if not token:
             return api_response.error(messages.INVALID_PASSWORD_OR_EMAIL, 401)
 

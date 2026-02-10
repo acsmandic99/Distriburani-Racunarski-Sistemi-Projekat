@@ -14,6 +14,7 @@ PASSWORD_CHANGED = "Password changed successfully"
 INVALID_PASSWORD_OR_EMAIL = "Invalid email or password"
 LOGIN_SUCCSESS = "Login successfull"
 LOGOUT_SUCCESS = "Logout successfull"
+TOO_MANY_WRONG_ATTEMPTS = "Too many wrong attempts,you are blocked for 15 minutes"
 #General
 INVALID_DATA_FORMAT = "Invalid data format"
 INTERNAL_ERROR = "An internal server error occurred"
