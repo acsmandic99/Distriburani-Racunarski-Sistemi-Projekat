@@ -6,6 +6,7 @@ from ..reviews.services import ReviewService
 from ..author_managment.services import AuthorManagmentService
 from ..shared.constants import messages
 from fpdf import FPDF
+from ..shared.utils.email_sender import launch_email_process
 class AdminService:
     @staticmethod
     def get_users():
@@ -28,7 +29,15 @@ class AdminService:
             oid = ObjectId(request_id)
         except Exception:
             raise ValueError(messages.REQUEST_NOT_FOUND)
+        
         AuthorManagmentService.approve_request(oid)
+
+        request_data = AuthorManagmentService.get_request_by_id(oid)
+        user_id = request_data.get("user_id") 
+
+        user_email = UserService.get_user_email(user_id)
+        launch_email_process(user_email, "Zahtev odobren", "Sada ste autor!")
+        
         
     @staticmethod
     def reject_author_request(request_id):
@@ -40,14 +49,22 @@ class AdminService:
             
         AuthorManagmentService.reject_request(oid)
 
+        request_data = AuthorManagmentService.get_request_by_id(oid)
+        user_id = request_data.get("user_id") 
+        
+        user_email = UserService.get_user_email(user_id)
+        launch_email_process(user_email, "Zahtev odbijen", "Vas zahtev za autora je nazalost odbijen!")
+
 
     @staticmethod
     def delete_user_account(user_id):
         try:
             oid = ObjectId(user_id)
         except Exception:
-            raise ValueError(messages.USER_NOT_FOUND)
-            
+            raise ValueError(messages.INVALID_DATA_FORMAT)
+        
+        user_email = UserService.get_user_email(oid)
+        launch_email_process(user_email, "Nalog obrisan", "Vas nalog je nazalost obrisan!")
         UserService.delete_user_completely(oid)
 
 

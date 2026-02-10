@@ -76,10 +76,10 @@ class RecipeService:
     @staticmethod
     def recipe_exists(recipe_id):
         try:
-            recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)}, {"_id": 1})
-            return recipe is not None
+            recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+            return recipe is not None,recipe
         except Exception:
-            return False
+            return False,None
         
 
     @staticmethod

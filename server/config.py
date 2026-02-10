@@ -7,3 +7,6 @@ class Config:
     MONGO_URI = f"{os.getenv('MONGO_URI')}/{os.getenv('MONGO_DB_NAME')}"
     
     JWT_SECRET_KEY = os.getenv("JWT_SECRET")
+
+    TOKEN = os.getenv("MAILTRAP_TOKEN")
+    INBOX_ID = os.getenv("MAILTRAP_INBOX_ID")

@@ -13,6 +13,7 @@ pydantic = {extras = ["email"], version = "*"}
 flask-pymongo = "*"
 flask-socketio = "*"
 flask-jwt-extended = "*"
+mailtrap = "*"
 
 [dev-packages]
 

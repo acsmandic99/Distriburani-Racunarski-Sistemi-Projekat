@@ -45,6 +45,25 @@ class UserService:
         user["id"] = str(user["_id"])
         
         return UserResponseSchema(**user).model_dump(mode='json')
+    
+    @staticmethod
+    def get_user_by_id(user_id):
+        if mongo.db is None:
+            raise Exception("Database connection is not initialized.")
+        try:
+                
+                oid = ObjectId(user_id)
+        except Exception:
+                return None
+
+        user = mongo.db.users.find_one({"_id": oid})
+
+        if not user:
+            return None
+
+        
+        
+        return user
     @staticmethod
     def get_users():
         users = list(mongo.db.users.find({}, {"password": 0}))
@@ -319,3 +338,12 @@ class UserService:
             {"total_ratings": {"$gt": 0}}, 
             {"first_name": 1,"last_name" : 1,"email": 1, "average_rating": 1, "total_ratings": 1}
         ).sort([("average_rating", -1), ("total_ratings", -1)]).limit(count))
+    
+
+    @staticmethod
+    def get_user_email(id):
+        user = mongo.db.users.find_one({"_id" : ObjectId(id)})
+        print(user["email"])
+        if not user:
+            raise ValueError(messages.USER_NOT_FOUND)
+        return user["email"]

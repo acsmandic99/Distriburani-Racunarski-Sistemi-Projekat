@@ -69,3 +69,6 @@ class AuthorManagmentService:
         )
         
         return True
+    @staticmethod
+    def get_request_by_id(oid):
+        return mongo.db.author_requests.find_one({"_id": oid})

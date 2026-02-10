@@ -5,6 +5,7 @@ from ..shared.constants import messages
 from ..shared.utils.image_service.service import ImageService
 from ..users.services import UserService 
 from .schemas import CommentSchema
+from ..shared.utils.email_sender import launch_email_process
 class CommentService:
     @staticmethod
     def add_comment(user_id, image_file, raw_data):
@@ -12,9 +13,10 @@ class CommentService:
         recipe_id = raw_data.get('recipe_id')
         if not recipe_id:
             raise ValueError(messages.RECIPE_ID_MISSING)
-        if not RecipeService.recipe_exists(recipe_id):
+        exists, recipe = RecipeService.recipe_exists(recipe_id)
+        if not exists:
             raise ValueError(messages.RECIPE_ID_NOT_FOUND)
-
+        #autor komentara
         author_data = UserService.get_author_data(ObjectId(user_id))
         
         comment_image = None
@@ -42,6 +44,12 @@ class CommentService:
         RecipeService.add_comment(recipe_id,comment_data_for_recipe)
         response_comment_data = new_comment.model_dump(mode='json')
         response_comment_data["_id"] = str(inserted_comment.inserted_id)
+        print(recipe)
+        recipe_author = UserService.get_user_by_id(recipe['author']['author_id'])
+        user_email = recipe_author["email"]
+        launch_email_process(user_email, f"Novi komentar za vas recept {recipe['title']}",
+                              f"Korisnik {author_data['first_name']}{author_data['last_name']} je ostavio komentar:\n{comment_dict['body']}")
+
         return response_comment_data
     
     @staticmethod
