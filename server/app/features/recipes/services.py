@@ -202,3 +202,6 @@ class RecipeService:
             },
             array_filters=[{"elem.review_id": str(review_id)}]
         )
+    @staticmethod
+    def get_all_recipes_count():
+        return mongo.db.recipes.count_documents({})

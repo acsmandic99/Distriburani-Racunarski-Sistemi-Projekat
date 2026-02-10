@@ -308,3 +308,14 @@ class UserService:
             {"_id": a_id},
             {"$set": {"average_rating": round(new_avg, 2)}}
         )
+
+    @staticmethod
+    def get_all_users_count():
+        return mongo.db.users.count_documents({})
+    
+    @staticmethod
+    def get_top_n_authors(count):
+        return list(mongo.db.users.find(
+            {"total_ratings": {"$gt": 0}}, 
+            {"first_name": 1,"last_name" : 1,"email": 1, "average_rating": 1, "total_ratings": 1}
+        ).sort([("average_rating", -1), ("total_ratings", -1)]).limit(count))

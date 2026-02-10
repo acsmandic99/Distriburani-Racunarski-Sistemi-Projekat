@@ -119,3 +119,7 @@ class ReviewService:
             }
         )
         return True
+    
+    @staticmethod
+    def get_all_reviews_count():
+        return mongo.db.reviews.count_documents({})

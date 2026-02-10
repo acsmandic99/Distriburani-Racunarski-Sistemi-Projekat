@@ -1,4 +1,4 @@
-from flask import Request
+from flask import make_response
 from ..shared.utils import api_response
 from .services import AdminService
 from . import admin_bp
@@ -83,3 +83,23 @@ def delete_user(user_id):
         if str(e) == messages.USER_NOT_FOUND:
             return api_response.error(messages.USER_NOT_FOUND, 404)
         return api_response.error(messages.INTERNAL_ERROR, 500)
+    
+
+@admin_bp.route("/stats", methods=["GET"])
+@jwt_required()
+@admin_required
+def get_stats():
+    stats = AdminService.get_platform_stats()
+    return api_response.success("Statistika ucitana", stats)
+
+@admin_bp.route("/report/pdf", methods=["GET"])
+@jwt_required()
+@admin_required
+def download_report():
+    pdf_content = AdminService.generate_top_authors_pdf()
+    
+    response = make_response(pdf_content)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=izvestaj_top_autori.pdf'
+    
+    return response
