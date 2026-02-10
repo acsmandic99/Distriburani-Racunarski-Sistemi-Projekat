@@ -3,33 +3,38 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../shared/contexts/AuthContext";
 import "./RecipeDetailsPage.css";
 import { useEffect, useState } from "react";
-import { getCommentsForRecipe, addComment, deleteComment } from "../../comments/services/commentAPI";
+import {
+  getCommentsForRecipe,
+  addComment,
+  deleteComment,
+} from "../../comments/services/commentAPI";
 import CommentsList from "../../comments/components/CommentListForm";
 import AddComment from "../../comments/components/AddCommentForm";
 
 const RecipeDetailsPage = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const location = useLocation();
   const { recipe } = location.state || {};
 
   const [comments, setComments] = useState([]);
   const [loadingComments, setLoadingComments] = useState(true);
+  console.log("AuthContext user:", user);
 
   useEffect(() => {
-  const fetchComments = async () => {
-    try {
-      setLoadingComments(true);
-      const data = await getCommentsForRecipe(recipe._id);
-      setComments(Array.isArray(data) ? data : []);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoadingComments(false);
-    }
-  };
+    const fetchComments = async () => {
+      try {
+        setLoadingComments(true);
+        const data = await getCommentsForRecipe(recipe._id);
+        setComments(Array.isArray(data) ? data : []);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoadingComments(false);
+      }
+    };
 
-  fetchComments();
+    fetchComments();
   }, [recipe._id]);
 
   const handleAddComment = async (formData) => {
@@ -38,8 +43,17 @@ const RecipeDetailsPage = () => {
   };
 
   const handleDeleteComment = async (commentId) => {
-    await deleteComment(commentId);
-    setComments((prev) => prev.filter((c) => c._id !== commentId));
+    if (!token) {
+      console.error("No token available for deleting comment");
+      return;
+    }
+
+    try {
+      await deleteComment(commentId, token);
+      setComments((prev) => prev.filter((c) => c._id !== commentId));
+    } catch (err) {
+      console.error("Failed to delete comment:", err);
+    }
   };
 
   if (!recipe) return <p>Recipe not found.</p>;
@@ -125,7 +139,7 @@ const RecipeDetailsPage = () => {
 
       <div className="recipe-comments">
         <h3>Comments</h3>
-        {user && ( <AddComment recipeId={recipe._id} onAdd={handleAddComment} /> )}
+        {user && <AddComment recipeId={recipe._id} onAdd={handleAddComment} />}
 
         {loadingComments ? (
           <p>Loading comments...</p>
@@ -140,9 +154,5 @@ const RecipeDetailsPage = () => {
     </div>
   );
 };
-
-
-
-
 
 export default RecipeDetailsPage;

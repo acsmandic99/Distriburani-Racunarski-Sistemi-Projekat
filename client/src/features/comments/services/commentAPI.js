@@ -16,7 +16,11 @@ export const addComment = async (formData) => {
   return res.data.data;
 };
 
-export const deleteComment = async (commentId) => {
-  const res = await api.delete(`/api/v1/comments/${commentId}`);
+export const deleteComment = async (commentId, token) => {
+  const res = await api.delete(`/api/v1/comments/${commentId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return res.data;
 };
