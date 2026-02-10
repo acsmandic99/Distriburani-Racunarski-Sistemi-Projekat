@@ -14,7 +14,7 @@ import Navbar from "./features/shared/components/ui/Navbar";
 import { LoginPage, RegisterPage } from "./features/auth";
 import { RecipesPage, RecipeDetailsPage } from "./features/recipes";
 import { AdminUsersPage, RoleRequestsPage } from "./features/admin";
-import { ProfilePage, AuthorPage } from "./features/users";
+import { ProfilePage, AuthorPage, AuthorProfilePage } from "./features/users";
 import ProtectedRoute from "./features/shared/components/ProtectedRoute";
 
 function AppRoutes() {
@@ -35,6 +35,7 @@ function AppRoutes() {
         <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/author" element={<AuthorPage />} />
+        <Route path="/author/:authorId" element={<AuthorProfilePage />} />
 
         <Route path="/admin/users" element={<AdminUsersPage />} />
         <Route path="/admin/role-requests" element={<RoleRequestsPage />} />
