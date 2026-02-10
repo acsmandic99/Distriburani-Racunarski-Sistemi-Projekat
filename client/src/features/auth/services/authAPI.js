@@ -1,15 +1,8 @@
 import api from "../../shared/services/api/api";
 
-export const setAuthToken = (token) => {
-  if (token) {
-    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  } else {
-    delete api.defaults.headers.common["Authorization"];
-  }
-};
-
 export const loginUser = async (email, password) => {
   const response = await api.post("api/v1/auth/login", { email, password });
+  console.log("LOGIN RESPONSE:", response.data);
   return response.data;
 };
 

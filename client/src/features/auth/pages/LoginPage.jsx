@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import LoginForm from "../components/LoginForm";
-import { loginUser, setAuthToken } from "../services/authAPI";
+import { loginUser } from "../services/authAPI";
 import { AuthContext } from "../../shared/contexts/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import "../components/Auth.css";
@@ -13,15 +13,14 @@ const LoginPage = () => {
   const handleLogin = async ({ email, password }) => {
     try {
       const response = await loginUser(email, password);
-
-      const token = response.data.access_token;
-      login(token);
+      const accessToken = response.data.access_token;
+      login(accessToken);
       navigate("/recipes");
     } catch (err) {
       setError(
         err.response?.data?.message ||
           err.response?.data?.error ||
-          "Invalid email or password"
+          "Invalid email or password",
       );
     }
   };

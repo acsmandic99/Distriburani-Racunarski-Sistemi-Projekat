@@ -16,7 +16,6 @@ import { RecipesPage, RecipeDetailsPage } from "./features/recipes";
 import { AdminUsersPage, RoleRequestsPage } from "./features/admin";
 import { ProfilePage, AuthorPage } from "./features/users";
 import ProtectedRoute from "./features/shared/components/ProtectedRoute";
-import { setAuthToken } from "./features/auth/services/authAPI";
 
 function AppRoutes() {
   const { user } = useContext(AuthContext);
@@ -45,11 +44,6 @@ function AppRoutes() {
 }
 
 function App() {
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) setAuthToken(token);
-  }, []);
-
   return (
     <AuthProvider>
       <Router>
