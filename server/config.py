@@ -10,3 +10,4 @@ class Config:
 
     TOKEN = os.getenv("MAILTRAP_TOKEN")
     INBOX_ID = os.getenv("MAILTRAP_INBOX_ID")
+    
