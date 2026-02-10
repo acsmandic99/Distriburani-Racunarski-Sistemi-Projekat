@@ -21,7 +21,7 @@ const RecipeDetailsPage = () => {
     try {
       setLoadingComments(true);
       const data = await getCommentsForRecipe(recipe._id);
-      setComments(data);
+      setComments(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error(e);
     } finally {

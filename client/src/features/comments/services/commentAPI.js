@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getCommentsForRecipe = async (recipeId, skip = 0, limit = 10) => {
   const res = await axios.get(`/comments/${recipeId}?skip=${skip}&limit=${limit}`);
-  return res.data.data;
+  return res.data.data || [];
 };
 
 export const addComment = async (formData) => {

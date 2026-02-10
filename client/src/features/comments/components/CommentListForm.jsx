@@ -1,5 +1,5 @@
-const CommentsList = ({ comments, currentUser, onDelete }) => {
-  if (comments.length === 0) {
+const CommentsList = ({ comments = [], currentUser, onDelete }) => {
+  if (!Array.isArray(comments) || comments.length === 0) {
     return <p>No comments yet.</p>;
   }
 
