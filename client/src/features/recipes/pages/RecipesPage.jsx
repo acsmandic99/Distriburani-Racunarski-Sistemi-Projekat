@@ -3,6 +3,7 @@ import { AuthContext } from "../../shared/contexts/AuthContext";
 import Recipe from "../components/recipe.jsx";
 import "../components/recipes.css";
 import { getRecipes } from "../services/recipesAPI.js";
+import { getMyFavourites } from "../../favourites/services/favouritesAPI";
 
 const RecipesPage = () => {
   const { user } = useContext(AuthContext);
@@ -13,8 +14,24 @@ const RecipesPage = () => {
   const fetchRecipes = async () => {
     try {
       setLoading(true);
-      const data = await getRecipes();
-      setRecipes(data);
+
+      const [allRecipes, favouriteRecipes] = await Promise.all([
+        getRecipes(),
+        user ? getMyFavourites() : Promise.resolve([]),
+      ]);
+
+      console.log("All recipes:", allRecipes);
+      console.log("My favourites API response:", favouriteRecipes);
+
+      // Make sure IDs are strings
+      const favouriteIds = new Set(favouriteRecipes.map((f) => String(f._id)));
+
+      const merged = allRecipes.map((r) => ({
+        ...r,
+        is_favourite: favouriteIds.has(String(r._id)),
+      }));
+
+      setRecipes(merged);
     } catch (err) {
       setError("Neuspešno učitavanje recepata.");
       console.error(err);
@@ -24,8 +41,10 @@ const RecipesPage = () => {
   };
 
   useEffect(() => {
-    fetchRecipes();
-  }, []);
+    if (user) {
+      fetchRecipes();
+    }
+  }, [user]);
 
   const handleRateRecipe = (recipeId, rating) => {
     console.log(`Rating recipe ${recipeId} with ${rating}`);
@@ -37,7 +56,6 @@ const RecipesPage = () => {
   return (
     <div style={{ padding: "2rem", color: "black" }}>
       <div id="welcome-message">
-        {/* 2. Uslovno prikazivanje poruke dobrodošlice */}
         {user ? (
           <h1>
             Welcome, {user.first_name} {user.last_name}!
@@ -48,18 +66,14 @@ const RecipesPage = () => {
         <p>Pogledajte najnovije recepte naših kuvara.</p>
       </div>
       <div className="recipes-grid">
-        {" "}
         {recipes.length > 0 ? (
-          recipes.map((recipe) => {
-            console.log(recipe);
-            return (
-              <Recipe
-                key={recipe._id}
-                recipe={recipe}
-                onRate={handleRateRecipe}
-              />
-            );
-          })
+          recipes.map((recipe) => (
+            <Recipe
+              key={recipe._id}
+              recipe={recipe}
+              onRate={handleRateRecipe}
+            />
+          ))
         ) : (
           <p>Trenutno nema objavljenih recepata.</p>
         )}

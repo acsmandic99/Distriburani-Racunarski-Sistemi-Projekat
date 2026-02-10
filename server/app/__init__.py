@@ -54,13 +54,14 @@ def create_app() -> Flask:
     app.register_blueprint(comment_bp)
     app.register_blueprint(favourites_bp)
     app.register_blueprint(reviews_bp)
-    #with app.app_context():
+    with app.app_context():
         #print(f"{'Endpoint':<40} {'Methods':<20} {'Rule'}")
         #print("-" * 80)
-        #for rule in app.url_map.iter_rules():
+        for rule in app.url_map.iter_rules():
         # Filtriramo samo rute (izbacujemo static fajlove ako smetaju)
         #    methods = ', '.join(rule.methods)
          #   print(f"{rule.endpoint:<40} {methods:<20} {rule}")
+            print(rule, rule.methods)
 
    
     return app
