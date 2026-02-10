@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { toggleFavourite } from "../../favourites/services/favouritesAPI";
 
 const Recipe = ({ recipe, onRate }) => {
   const navigate = useNavigate();
+
   const [userRating, setUserRating] = useState(0);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
+  const [isFavourite, setIsFavourite] = useState(recipe.is_favourite ?? false);
 
-  const handleRate = (rating) => {
-    setUserRating(rating);
-    onRate(recipe.id, rating);
-  };
+  useEffect(() => {
+    setIsFavourite(recipe.is_favourite ?? false);
+  }, [recipe.is_favourite]);
 
   const displayRating =
     recipe.total_recipe_ratings > 0
@@ -21,6 +23,23 @@ const Recipe = ({ recipe, onRate }) => {
   const handleNavigateToDetails = () => {
     navigate(`/recipes/${recipe._id}`, { state: { recipe } });
   };
+
+  const handleRate = (rating) => {
+    setUserRating(rating);
+    if (onRate) onRate(recipe._id, rating);
+  };
+
+  const handleToggleFavourite = async (e) => {
+    e.stopPropagation();
+    try {
+      const res = await toggleFavourite(recipe._id);
+      setIsFavourite(res.action === "added");
+    } catch (err) {
+      console.error("Failed to toggle favourite", err);
+    }
+  };
+
+  console.log("Recipe:", recipe._id, "is_favourite:", recipe.is_favourite);
 
   return (
     <div className="recipe-card">
@@ -41,20 +60,22 @@ const Recipe = ({ recipe, onRate }) => {
 
         <div className="recipe-info">
           <div className="info-item">
-            <span>{recipe.time_for_preperation} </span>
+            <span>{recipe.time_for_preperation}</span>
           </div>
           <div className="info-item">
             <span>{recipe.number_of_people} osobe</span>
           </div>
         </div>
+
         <div className="recipe-author">
           <Link to={`/author/${recipe.author.author_id}`}>
             Author: {recipe.author.first_name} {recipe.author.last_name}
           </Link>
         </div>
+
         <div className="recipe-rating-section">
           <div className="rating-display">
-            <span>Prosecna ocena:</span>
+            <span>Prosečna ocena:</span>
             <span className="rating-value">
               {displayRating}{" "}
               {recipe.total_recipe_ratings > 0 &&
@@ -84,6 +105,16 @@ const Recipe = ({ recipe, onRate }) => {
                   </span>
                 </button>
               ))}
+
+              <button
+                className="favourite-button"
+                onClick={handleToggleFavourite}
+                title={
+                  isFavourite ? "Remove from favourites" : "Add to favourites"
+                }
+              >
+                {isFavourite ? "❤️" : "🤍"}
+              </button>
             </div>
           </div>
         </div>
@@ -92,7 +123,7 @@ const Recipe = ({ recipe, onRate }) => {
           onClick={() => setShowDetails(!showDetails)}
           className="details-button"
         >
-          {showDetails ? "Sakrij detalje" : "Prikazi detalje"}
+          {showDetails ? "Sakrij detalje" : "Prikaži detalje"}
         </button>
 
         {showDetails && (
@@ -106,8 +137,8 @@ const Recipe = ({ recipe, onRate }) => {
 
             <h4>Priprema:</h4>
             <ul>
-              {recipe.steps.map((ing, idx) => (
-                <li key={idx}>{ing}</li>
+              {recipe.steps.map((step, idx) => (
+                <li key={idx}>{step}</li>
               ))}
             </ul>
           </div>
