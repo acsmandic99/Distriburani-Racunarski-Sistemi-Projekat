@@ -67,3 +67,58 @@
   color: #333;
   font-size: 14px;
 }
+
+/*comments deo*/
+
+.add-comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.add-comment-form textarea {
+  min-height: 80px;
+  padding: 8px;
+  resize: vertical;
+}
+
+.add-comment-form button {
+  align-self: flex-start;
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.comment-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #555;
+}
+
+.comment-body {
+  margin: 5px 0;
+}
+
+.comment-image {
+  max-width: 200px;
+  border-radius: 6px;
+  margin-top: 5px;
+}
+
+.comment-delete {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 12px;
+}
