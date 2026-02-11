@@ -1,0 +1,50 @@
+services:
+  # 1. MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # 2. Redis
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+
+  # 3. Backend
+  backend:
+    build: ./server  
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    env_file:        
+      - .env
+    volumes:
+      - ./server:/app 
+      - ./server/app/static/uploads:/app/app/static/uploads
+    environment:
+      - REDIS_HOST=redis_cache
+      - MONGO_URI_FULL=mongodb://mongo_db:27017/docker_recipes
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - mongodb
+      - redis
+  # 4. Front
+  frontend:
+    build: ./client  
+    container_name: vite_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5000/api
+    depends_on:
+      - backend
+volumes:
+  mongo_data:

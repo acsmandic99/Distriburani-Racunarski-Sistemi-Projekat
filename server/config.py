@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    MONGO_URI = f"{os.getenv('MONGO_URI')}/{os.getenv('MONGO_DB_NAME')}"
+    default_mongo = f"{os.getenv('MONGO_URI')}/{os.getenv('MONGO_DB_NAME')}"
+    MONGO_URI = os.getenv("MONGO_URI_FULL", default_mongo)
     
     JWT_SECRET_KEY = os.getenv("JWT_SECRET")
 

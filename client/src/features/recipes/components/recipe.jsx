@@ -40,8 +40,9 @@ const Recipe = ({ recipe, onRate }) => {
   };
 
   console.log("Recipe:", recipe._id, "is_favourite:", recipe.is_favourite);
-
+const baseUrl = "http://localhost:5000";
   return (
+    
     <div className="recipe-card">
       <img
         src={recipe.image_url}

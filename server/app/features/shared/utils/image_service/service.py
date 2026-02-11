@@ -5,7 +5,8 @@ from flask import url_for,current_app
 
 class ImageService:
 
-    UPLOAD_FOLDER = 'app/static/uploads/'
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    UPLOAD_FOLDER = os.path.join(os.getcwd(), 'app', 'static', 'uploads')
     os.makedirs(UPLOAD_FOLDER,exist_ok=True)
 
     @staticmethod
