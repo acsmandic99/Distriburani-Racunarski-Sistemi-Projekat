@@ -40,9 +40,8 @@ const Recipe = ({ recipe, onRate }) => {
   };
 
   console.log("Recipe:", recipe._id, "is_favourite:", recipe.is_favourite);
-const baseUrl = "http://localhost:5000";
+  const baseUrl = "http://localhost:5000";
   return (
-    
     <div className="recipe-card">
       <img
         src={recipe.image_url}
@@ -70,7 +69,7 @@ const baseUrl = "http://localhost:5000";
 
         <div className="recipe-author">
           <Link to={`/author/${recipe.author.author_id}`}>
-            Author: {recipe.author.first_name} {recipe.author.last_name}
+            Autor: {recipe.author.first_name} {recipe.author.last_name}
           </Link>
         </div>
 

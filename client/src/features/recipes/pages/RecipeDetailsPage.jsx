@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
 import { AuthContext } from "../../shared/contexts/AuthContext";
 import "./RecipeDetailsPage.css";
 import { useEffect, useState } from "react";
@@ -10,22 +10,44 @@ import {
 } from "../../comments/services/commentAPI";
 import CommentsList from "../../comments/components/CommentListForm";
 import AddComment from "../../comments/components/AddCommentForm";
+import { getRecipeById } from "../services/recipesAPI";
 
 const RecipeDetailsPage = () => {
   const navigate = useNavigate();
   const { user, token } = useContext(AuthContext);
   const location = useLocation();
   const { recipe } = location.state || {};
+  const { id } = useParams();
+  const [recipeData, setRecipeData] = useState(recipe || null);
+  const [loadingRecipe, setLoadingRecipe] = useState(!recipe);
 
   const [comments, setComments] = useState([]);
   const [loadingComments, setLoadingComments] = useState(true);
-  console.log("AuthContext user:", user);
 
   useEffect(() => {
+    const fetchRecipe = async () => {
+      try {
+        if (!recipe && id) {
+          const data = await getRecipeById(id);
+          setRecipeData(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch recipe:", err);
+      } finally {
+        setLoadingRecipe(false);
+      }
+    };
+
+    fetchRecipe();
+  }, [id, recipe]);
+
+  useEffect(() => {
+    if (!recipeData?._id) return;
+
     const fetchComments = async () => {
       try {
         setLoadingComments(true);
-        const data = await getCommentsForRecipe(recipe._id);
+        const data = await getCommentsForRecipe(recipeData._id);
         setComments(Array.isArray(data) ? data : []);
       } catch (e) {
         console.error(e);
@@ -35,7 +57,7 @@ const RecipeDetailsPage = () => {
     };
 
     fetchComments();
-  }, [recipe._id]);
+  }, [recipeData?._id]);
 
   const handleAddComment = async (formData) => {
     const newComment = await addComment(formData);
@@ -56,18 +78,21 @@ const RecipeDetailsPage = () => {
     }
   };
 
-  if (!recipe) return <p>Recipe not found.</p>;
+  if (loadingRecipe) return <p>Loading recipe...</p>;
+  if (!recipeData) return <p>Recipe not found.</p>;
 
   const handleEdit = () => {
-    console.log("Edit recipe:", recipe._id);
+    console.log("Edit recipe:", recipeData._id);
   };
 
   const handleDelete = () => {
-    console.log("Delete recipe:", recipe._id);
+    console.log("Delete recipe:", recipeData._id);
   };
 
   const isAuthor =
-    user && recipe.author && recipe.author.first_name === user.first_name;
+    user &&
+    recipeData.author &&
+    recipeData.author.first_name === user.first_name;
 
   return (
     <div className="recipe-details-page">
@@ -82,48 +107,51 @@ const RecipeDetailsPage = () => {
         &larr; Back
       </button>
 
-      <h1>{recipe.title}</h1>
+      <h1>{recipeData.title}</h1>
       <p>
-        <strong>Type:</strong> {recipe.type_of_dish}
+        <strong>Type:</strong> {recipeData.type_of_dish}
       </p>
       <p>
-        <strong>Prep time:</strong> {recipe.time_for_preperation}
+        <strong>Prep time:</strong> {recipeData.time_for_preperation}
       </p>
       <p>
-        <strong>Difficulty:</strong> {recipe.difficulty}
+        <strong>Difficulty:</strong> {recipeData.difficulty}
       </p>
       <p>
-        <strong>Servings:</strong> {recipe.number_of_people}
+        <strong>Servings:</strong> {recipeData.number_of_people}
       </p>
       <p>
-        <strong>Author:</strong> {recipe.author.first_name}{" "}
-        {recipe.author.last_name}
+        <strong>Author:</strong>{" "}
+        <Link to={`/author/${recipeData.author.author_id}`}>
+          {recipeData.author.first_name} {recipeData.author.last_name}
+        </Link>
       </p>
 
-      {recipe.image_url && (
+      {recipeData.image_url && (
         <img
-          src={recipe.image_url}
-          alt={recipe.title}
+          src={recipeData.image_url}
+          alt={recipeData.title}
           className="recipe-image"
         />
       )}
 
-      {recipe.additional_marks && recipe.additional_marks.length > 0 && (
-        <p>
-          <strong>Tags:</strong> {recipe.additional_marks.join(", ")}
-        </p>
-      )}
+      {recipeData.additional_marks &&
+        recipeData.additional_marks.length > 0 && (
+          <p>
+            <strong>Tags:</strong> {recipeData.additional_marks.join(", ")}
+          </p>
+        )}
 
       <h2>Ingredients</h2>
       <ul>
-        {recipe.ingredients.map((item, idx) => (
+        {recipeData.ingredients.map((item, idx) => (
           <li key={idx}>{item}</li>
         ))}
       </ul>
 
       <h2>Steps</h2>
       <ol>
-        {recipe.steps.map((step, idx) => (
+        {recipeData.steps.map((step, idx) => (
           <li key={idx}>{step}</li>
         ))}
       </ol>
@@ -139,7 +167,9 @@ const RecipeDetailsPage = () => {
 
       <div className="recipe-comments">
         <h3>Comments</h3>
-        {user && <AddComment recipeId={recipe._id} onAdd={handleAddComment} />}
+        {user && (
+          <AddComment recipeId={recipeData._id} onAdd={handleAddComment} />
+        )}
 
         {loadingComments ? (
           <p>Loading comments...</p>

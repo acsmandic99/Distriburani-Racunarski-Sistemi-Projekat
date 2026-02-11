@@ -17,11 +17,11 @@ const ProfilePage = () => {
       // Update context so UI shows new data
       setUser(updatedUser);
 
-      setMessage("Profile updated successfully!");
+      setMessage("Uspešno ste ažurirali profil!");
       setTimeout(() => navigate("/recipes"), 1000);
     } catch (err) {
       console.error("Profile update failed", err);
-      setMessage("Failed to update profile");
+      setMessage("Neuspešno ažuriranje profila.");
     }
   };
 
@@ -30,7 +30,7 @@ const ProfilePage = () => {
   return (
     <div className="profile-page">
       <div className="profile-container">
-        <h1>My Profile</h1>
+        <h1>Moj profil</h1>
         {message && <p className="message">{message}</p>}
         <ProfileForm user={user} onSubmit={handleUpdate} />
       </div>

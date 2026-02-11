@@ -58,7 +58,7 @@ const RecipesPage = () => {
       <div id="welcome-message">
         {user ? (
           <h1>
-            Welcome, {user.first_name} {user.last_name}!
+            Dobrodošli, {user.first_name} {user.last_name}!
           </h1>
         ) : (
           <h1>Welcome, Guest!</h1>
