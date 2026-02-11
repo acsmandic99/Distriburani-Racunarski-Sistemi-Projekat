@@ -9,29 +9,39 @@ const ProfileForm = ({ user, onSubmit }) => {
     country: user.country || "",
     city: user.city || "",
   });
+
   const [passwordData, setPasswordData] = useState({
     old_password: "",
     new_password: "",
   });
+
   const [avatar, setAvatar] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(
-    user.profile_picture || "",
-  );
+  const [avatarPreview, setAvatarPreview] = useState("");
+
   const [message, setMessage] = useState("");
+
+  // Helper to get full avatar URL
+  const getAvatarUrl = (path) => {
+    if (!path) return "";
+    if (path.startsWith("http://") || path.startsWith("https://")) return path;
+    return `http://localhost:5000${path}`;
+  };
 
   useEffect(() => {
     if (avatar) {
+      // New upload
       const reader = new FileReader();
       reader.onloadend = () => setAvatarPreview(reader.result);
       reader.readAsDataURL(avatar);
     } else {
-      setAvatarPreview(user.profile_picture || "");
+      setAvatarPreview(getAvatarUrl(user.profile_picture));
     }
   }, [avatar, user.profile_picture]);
 
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handlePasswordChange = (e) => {
     setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
   };
@@ -41,7 +51,6 @@ const ProfileForm = ({ user, onSubmit }) => {
     setMessage("");
 
     try {
-      // update profila
       await onSubmit(formData, avatar);
 
       if (passwordData.old_password && passwordData.new_password) {
