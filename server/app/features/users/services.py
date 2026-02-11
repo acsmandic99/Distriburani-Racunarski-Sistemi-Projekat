@@ -29,7 +29,7 @@ class UserService:
     
 
     @staticmethod
-    def get_user(user_id):
+    def get_user(user_id,base_url):
         if mongo.db is None:
             raise Exception("Database connection is not initialized.")
         try:
@@ -44,11 +44,11 @@ class UserService:
             return None
 
         user["id"] = str(user["_id"])
-        
+        fix_urls(user,base_url)
         return UserResponseSchema(**user).model_dump(mode='json')
     
     @staticmethod
-    def get_user_by_id(user_id):
+    def get_user_by_id(user_id,base_url):
         if mongo.db is None:
             raise Exception("Database connection is not initialized.")
         try:
@@ -58,7 +58,7 @@ class UserService:
                 return None
 
         user = mongo.db.users.find_one({"_id": oid})
-
+        fix_urls(user,base_url)
         if not user:
             return None
 
