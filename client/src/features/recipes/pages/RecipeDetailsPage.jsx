@@ -9,6 +9,7 @@ import {
   deleteComment,
 } from "../../comments/services/commentAPI";
 import CommentsList from "../../comments/components/CommentListForm";
+import { ReviewForm } from "../../reviews";
 import AddComment from "../../comments/components/AddCommentForm";
 import { getRecipeById } from "../services/recipesAPI";
 
@@ -164,6 +165,8 @@ const RecipeDetailsPage = () => {
           </button>
         </div>
       )}
+
+      {recipeData && <ReviewForm recipeId={recipeData._id} />}
 
       <div className="recipe-comments">
         <h3>Comments</h3>

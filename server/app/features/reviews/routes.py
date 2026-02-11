@@ -7,7 +7,7 @@ from pydantic import ValidationError
 from . import reviews_bp
 
 
-@reviews_bp.route("/<recipe_id>", methods=["POST"])
+@reviews_bp.route("/recipe/<recipe_id>/review", methods=["POST"])
 @jwt_required()
 def add_review(recipe_id):
     try:
@@ -25,7 +25,7 @@ def add_review(recipe_id):
         print(f"Review Error: {e}")
         return api_response.error(messages.INTERNAL_ERROR, 500)
     
-@reviews_bp.route("/<review_id>", methods=["DELETE"])
+@reviews_bp.route("/review/<review_id>", methods=["DELETE"])
 @jwt_required()
 def delete_review(review_id):
     try:
@@ -39,7 +39,7 @@ def delete_review(review_id):
         return api_response.error(messages.INTERNAL_ERROR, 500)
         
 
-@reviews_bp.route("/<review_id>", methods=["PATCH"])
+@reviews_bp.route("/review/<review_id>", methods=["PATCH"])
 @jwt_required()
 def update_review(review_id):
     try:
