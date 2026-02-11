@@ -11,7 +11,9 @@ cors: CORS = CORS()
 jwt = JWTManager()
 socketio: SocketIO = SocketIO()
 redis_host = os.getenv("REDIS_HOST", "localhost") 
-try:
-    redis_client = redis.Redis(host=redis_host, port=6379, db=0, decode_responses=True, socket_connect_timeout=2)
-except:
-    redis_client = None
+redis_url = os.getenv("REDIS_URL")
+if redis_url:
+    redis_client = redis.from_url(redis_url, decode_responses=True)
+else:
+    redis_host = os.getenv("REDIS_HOST", "localhost")
+    redis_client = redis.Redis(host=redis_host, port=6379, db=0, decode_responses=True)

@@ -55,7 +55,7 @@ def create_app() -> Flask:
         }
     })
     #test_connection()
-    #test_redis()
+    test_redis()
   
     # Register blueprints
     app.register_blueprint(users_bp)
@@ -71,6 +71,14 @@ def create_app() -> Flask:
         try:
             mongo.db.command('ping')
             return {"status": "Sjajno!", "db": "Povezan na Atlas"}, 200
+        except Exception as e:
+            return {"status": "Greška!", "error": str(e)}, 500
+    @app.route('/test-redis')
+    def test_redis_route():
+        try:
+            redis_client.set("test_key", "Redis radi!", ex=10)
+            vrednost = redis_client.get("test_key")
+            return {"status": "Sjajno!", "redis_poruka": vrednost}, 200
         except Exception as e:
             return {"status": "Greška!", "error": str(e)}, 500
 
