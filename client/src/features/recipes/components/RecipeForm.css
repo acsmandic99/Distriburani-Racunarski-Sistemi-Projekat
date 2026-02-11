@@ -50,7 +50,7 @@
 
 .recipe-form label {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   display: block;
   color: #000;
 }
@@ -58,23 +58,46 @@
 .recipe-form .array-item {
   display: flex;
   gap: 10px;
-  align-items: center;
+  align-items: stretch; /* Changed from center to stretch */
   margin-bottom: 8px;
 }
 
 .recipe-form .array-item input {
   flex: 1;
+  margin-bottom: 0; /* Remove the margin-bottom from inputs inside array-item */
 }
 
 .recipe-form .array-item button {
   flex: 0 0 auto;
+  margin-top: 0; /* Remove margin-top from these buttons */
+  padding: 10px 16px; /* Match the input padding */
+  background-color: #dc3545; /* Red for remove buttons */
 }
 
-.recipe-form button[type="button"] {
+.recipe-form .array-item button:hover {
+  background-color: #c82333;
+}
+
+/* Style for Add buttons (not remove buttons) */
+.recipe-form .form-section > button[type="button"] {
   background-color: #007bff;
-  margin-left: 5px;
+  margin-left: 0;
+  align-self: flex-start;
+  margin-top: 5px;
 }
 
-.recipe-form button[type="button"]:hover {
+.recipe-form .form-section > button[type="button"]:hover {
   background-color: #0056b3;
+}
+
+/* Submit button */
+.recipe-form button[type="submit"] {
+  background-color: #28a745;
+  align-self: center;
+  min-width: 200px;
+  margin-top: 20px;
+}
+
+.recipe-form button[type="submit"]:hover {
+  background-color: #218838;
 }

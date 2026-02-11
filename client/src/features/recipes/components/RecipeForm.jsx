@@ -120,6 +120,7 @@ const RecipeForm = ({ onSubmit }) => {
             />
             <button
               type="button"
+              className="remove-button"
               onClick={() => removeArrayItem("ingredients", i)}
             >
               Remove
@@ -139,7 +140,11 @@ const RecipeForm = ({ onSubmit }) => {
               value={step}
               onChange={(e) => handleArrayChange("steps", i, e.target.value)}
             />
-            <button type="button" onClick={() => removeArrayItem("steps", i)}>
+            <button
+              type="button"
+              className="remove-button"
+              onClick={() => removeArrayItem("steps", i)}
+            >
               Remove
             </button>
           </div>
