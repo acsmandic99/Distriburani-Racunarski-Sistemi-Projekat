@@ -54,10 +54,5 @@ def create_app() -> Flask:
     app.register_blueprint(comment_bp)
     app.register_blueprint(favourites_bp)
     app.register_blueprint(reviews_bp)
-
-    print("\n=== REGISTERED ROUTES ===")
-    for rule in app.url_map.iter_rules():
-        print(f"{rule.endpoint}: {rule.rule} [{', '.join(rule.methods)}]")
-    print("=========================\n")
    
     return app
