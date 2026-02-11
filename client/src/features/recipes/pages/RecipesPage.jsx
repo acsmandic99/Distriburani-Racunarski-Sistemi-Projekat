@@ -20,9 +20,6 @@ const RecipesPage = () => {
         user ? getMyFavourites() : Promise.resolve([]),
       ]);
 
-      console.log("All recipes:", allRecipes);
-      console.log("My favourites API response:", favouriteRecipes);
-
       // Make sure IDs are strings
       const favouriteIds = new Set(favouriteRecipes.map((f) => String(f._id)));
 

@@ -217,3 +217,43 @@
 .review-form button[type="submit"]:active:not(:disabled) {
   transform: translateY(0);
 }
+
+.recipe-reviews {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.review-card {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border-left: 4px solid #007bff;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.review-rating {
+  font-weight: bold;
+}
+
+.review-date {
+  color: #666;
+}
+
+.review-body {
+  margin: 5px 0 10px 0;
+  font-size: 14px;
+}
+
+.review-image {
+  max-width: 250px;
+  border-radius: 6px;
+  margin-top: 5px;
+}
