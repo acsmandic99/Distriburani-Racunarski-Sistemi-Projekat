@@ -31,7 +31,7 @@ class AuthService:
     @staticmethod
     def logout(jti):
         try:
-            redis_client.setex(f"blacklist:{jti}", 3600, "true")
+            redis_client.setex(f"blacklist:{jti}", 3600, "truee")
             return True
         except Exception as e:
             print(f"Redis logout error: {e}")
