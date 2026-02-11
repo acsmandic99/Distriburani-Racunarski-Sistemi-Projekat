@@ -71,11 +71,7 @@ const ProfileForm = ({ user, onSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="avatar-preview">
-        {avatarPreview ? (
-          <img src={avatarPreview} alt="Avatar Preview" />
-        ) : (
-          <p>Nemate sliku</p>
-        )}
+        {avatarPreview ? <img src={avatarPreview} /> : <p>Nemate sliku</p>}
       </div>
 
       <input

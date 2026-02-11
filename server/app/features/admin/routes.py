@@ -100,7 +100,8 @@ def get_stats():
 def download_report():
     pdf_content = AdminService.generate_top_authors_pdf()
     
-    response = make_response(pdf_content)
+    pdf_bytes = bytes(pdf_content)
+    response = make_response(pdf_bytes)
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = 'attachment; filename=izvestaj_top_autori.pdf'
     
