@@ -17,13 +17,7 @@ from flask_socketio import SocketIO
 import os
 
 def create_app() -> Flask:
-    @app.route('/test-db')
-    def test_db():
-        try:
-            mongo.db.command('ping')
-            return {"status": "Sjajno!", "db": "Povezan na Atlas"}, 200
-        except Exception as e:
-            return {"status": "Greška!", "error": str(e)}, 500
+    
         
     static_dir = os.path.join(os.getcwd(), 'app', 'static')
     app = Flask(__name__,
@@ -69,6 +63,12 @@ def create_app() -> Flask:
     app.register_blueprint(comment_bp)
     app.register_blueprint(favourites_bp)
     app.register_blueprint(reviews_bp)
-
+    @app.route('/test-db')
+    def test_db():
+        try:
+            mongo.db.command('ping')
+            return {"status": "Sjajno!", "db": "Povezan na Atlas"}, 200
+        except Exception as e:
+            return {"status": "Greška!", "error": str(e)}, 500
 
     return app
