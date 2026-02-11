@@ -57,3 +57,17 @@ def update_review(review_id):
     except Exception as e:
         print(f"PATCH_REVIEW_ERROR: {e}")
         return api_response.error(messages.INTERNAL_ERROR, 500)
+    
+@reviews_bp.route("/<recipe_id>", methods=["GET"])
+def get_reviews(recipe_id):
+    try:
+        base_url = request.host_url.rstrip('/')
+        reviews = ReviewService.get_all_reviews(recipe_id,base_url)
+        return api_response.success(messages.REVIEWS_FETCHED,reviews,200)
+    except ValidationError as e:
+        return api_response.error(messages.INVALID_DATA_FORMAT, 400, e.errors())
+    except ValueError as e:
+        return api_response.error(str(e), 404)
+    except Exception as e:
+        print(f"GET_REVIEW_ERROR: {e}")
+        return api_response.error(messages.INTERNAL_ERROR, 500)

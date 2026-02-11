@@ -17,7 +17,9 @@ services:
 
   # 3. Backend
   backend:
-    build: ./server  
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev  
     container_name: flask_app
     ports:
       - "5000:5000"
@@ -35,7 +37,9 @@ services:
       - redis
   # 4. Front
   frontend:
-    build: ./client  
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev  
     container_name: vite_frontend
     ports:
       - "5173:5173"

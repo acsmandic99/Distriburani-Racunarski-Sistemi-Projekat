@@ -6,7 +6,7 @@ from ..shared.utils.image_service.service import ImageService
 from ..recipes.services import RecipeService
 from ..users.services import UserService
 from .schemas import ReviewCreateSchema 
-
+from ..shared.utils.url_fixer import fix_urls
 class ReviewService:
     @staticmethod
     def add_review(user_id, recipe_id, raw_data, image_file):
@@ -123,3 +123,17 @@ class ReviewService:
     @staticmethod
     def get_all_reviews_count():
         return mongo.db.reviews.count_documents({})
+    
+    @staticmethod
+    def get_all_reviews(recipe_id,base_url):
+        recipe = RecipeService.get_recipe_by_id(recipe_id)
+        if not recipe:
+            raise ValueError(messages.RECIPE_ID_NOT_FOUND)
+        reviews = list(mongo.db.reviews.find({"recipe_id" : ObjectId(recipe_id)}))
+        
+        for r in reviews:
+            r["_id"] = str(r["_id"])
+            r["user_id"] = str(r["user_id"])
+            r["recipe_id"] = str(r["recipe_id"])
+            fix_urls(r,base_url)
+        return reviews

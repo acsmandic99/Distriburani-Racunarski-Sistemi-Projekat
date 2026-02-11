@@ -15,6 +15,7 @@ flask-jwt-extended = "*"
 mailtrap = "*"
 flask-socketio = "*"
 redis = "*"
+gunicorn = "*"
 
 [dev-packages]
 
