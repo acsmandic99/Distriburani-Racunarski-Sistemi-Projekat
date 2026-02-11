@@ -37,37 +37,35 @@ const ProfileForm = ({ user, onSubmit }) => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setMessage("");
+    e.preventDefault();
+    setMessage("");
 
-  try {
-    // update profila
-    await onSubmit(formData, avatar);
+    try {
+      // update profila
+      await onSubmit(formData, avatar);
 
-    if (passwordData.old_password && passwordData.new_password) {
-      await changePassword(
-        passwordData.old_password,
-        passwordData.new_password
-      );
+      if (passwordData.old_password && passwordData.new_password) {
+        await changePassword(
+          passwordData.old_password,
+          passwordData.new_password,
+        );
+      }
+
+      setMessage("Uspešno ste ažurirali profil!");
+      setPasswordData({ old_password: "", new_password: "" });
+    } catch (err) {
+      console.error("CHANGE PASSWORD ERROR:", err.response?.data);
+      setMessage(err.response?.data?.message || "Update failed");
     }
-
-    setMessage("Profile updated successfully");
-    setPasswordData({ old_password: "", new_password: "" });
-  } catch (err) {
-    console.error("CHANGE PASSWORD ERROR:", err.response?.data);
-  setMessage(
-    err.response?.data?.message || "Update failed")
-  }
-};
-
+  };
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="avatar-preview">
         {avatarPreview ? (
-          <img src={avatarPreview} alt="Avatar Preview"/>
+          <img src={avatarPreview} alt="Avatar Preview" />
         ) : (
-          <p>No avatar</p>
+          <p>Nemate sliku</p>
         )}
       </div>
 
@@ -79,7 +77,7 @@ const ProfileForm = ({ user, onSubmit }) => {
 
       <input
         name="first_name"
-        placeholder="First name"
+        placeholder="Ime"
         value={formData.first_name}
         onChange={handleFormChange}
         required
@@ -87,7 +85,7 @@ const ProfileForm = ({ user, onSubmit }) => {
 
       <input
         name="last_name"
-        placeholder="Last name"
+        placeholder="Prezime"
         value={formData.last_name}
         onChange={handleFormChange}
         required
@@ -98,7 +96,7 @@ const ProfileForm = ({ user, onSubmit }) => {
       <input
         type="password"
         name="old_password"
-        placeholder="Current password"
+        placeholder="Trenutni password"
         value={passwordData.old_password}
         onChange={handlePasswordChange}
       />
@@ -106,26 +104,26 @@ const ProfileForm = ({ user, onSubmit }) => {
       <input
         type="password"
         name="new_password"
-        placeholder="New password"
+        placeholder="Novi password"
         value={passwordData.new_password}
         onChange={handlePasswordChange}
       />
 
       <input
         name="country"
-        placeholder="Country"
+        placeholder="Država"
         value={formData.country}
         onChange={handleFormChange}
       />
 
       <input
         name="city"
-        placeholder="City"
+        placeholder="Grad"
         value={formData.city}
         onChange={handleFormChange}
       />
 
-      <button type="submit">Save</button>
+      <button type="submit">Sačuvaj</button>
 
       {message && <p className="form-message">{message}</p>}
     </form>

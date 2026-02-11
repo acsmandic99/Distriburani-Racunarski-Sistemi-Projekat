@@ -122,3 +122,98 @@
   cursor: pointer;
   font-size: 12px;
 }
+
+.review-form {
+  margin-top: 30px;
+  padding: 25px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.review-form h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+}
+
+.review-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.review-form .stars {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.review-form .stars span {
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.review-form .stars span:hover {
+  transform: scale(1.2);
+}
+
+.review-form textarea {
+  min-height: 100px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+.review-form textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.review-form input[type="file"] {
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.review-form input[type="file"]:hover {
+  border-color: #007bff;
+  background-color: #f0f8ff;
+}
+
+.review-form button[type="submit"] {
+  align-self: flex-start;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.review-form button[type="submit"]:hover:not(:disabled) {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.review-form button[type="submit"]:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.review-form button[type="submit"]:active:not(:disabled) {
+  transform: translateY(0);
+}

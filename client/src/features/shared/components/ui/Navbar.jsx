@@ -20,20 +20,19 @@ const Navbar = () => {
   return (
     <nav>
       <div>
-        <Link to="/">Home</Link>
-
         {user && (
           <>
-            <Link to="/recipes">Recipes</Link>
-            <Link to="/profile">Profile</Link>
-            <Link to="/author">Author</Link>
+            <Link to="/recipes">Recepti</Link>
+            <Link to="/favourites">Omiljeni</Link>
+            <Link to="/profile">Profil</Link>
+            <Link to="/author">Autor</Link>
           </>
         )}
 
         {user?.role === "admin" && (
           <>
-            <Link to="/admin/users">Users</Link>
-            <Link to="/admin/role-requests">Role Requests</Link>
+            <Link to="/admin/users">Korisnici</Link>
+            <Link to="/admin/role-requests">Zahtevi Uloge</Link>
           </>
         )}
       </div>

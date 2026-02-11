@@ -29,7 +29,9 @@ const AuthorPage = () => {
     setMessage("");
     try {
       const res = await requestAuthorRole();
-      setMessage(res.message || "Request submitted successfully!");
+      if (res.message == "Role already requested")
+        setMessage("Već ste zatražili ulogu autora");
+      else setMessage("Uspešno poslat zahtev");
 
       // Update user context to reflect pending request
       setUser((prev) => ({ ...prev, author_request_pending: true }));
@@ -43,17 +45,19 @@ const AuthorPage = () => {
   const handleAddRecipe = async (data, image) => {
     try {
       await addRecipe(data, image);
-      alert("Recipe added successfully!");
+      alert("Uspešno dodat recept!");
     } catch (err) {
       console.error(err);
-      alert("Failed to add recipe: " + (err.message || "Unknown error"));
+      alert(
+        "Greška pri dodavanju recepta: " + (err.message || "Unknown error"),
+      );
     }
   };
 
   return (
     <div className="author-page">
       <div className="author-container">
-        <h1>Author Dashboard</h1>
+        <h1>Autor Dashboard</h1>
 
         {!isAuthor ? (
           <div className="author-info">
@@ -64,10 +68,10 @@ const AuthorPage = () => {
               className={!canRequest ? "disabled" : ""}
             >
               {loading
-                ? "Requesting..."
+                ? "Zahteva se..."
                 : canRequest
-                  ? "Request Author Role"
-                  : "Request Pending"}
+                  ? "Zatraži ulogu autora"
+                  : "Zahtev u obradi"}
             </button>
             {message && <p className="message">{message}</p>}
           </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getAuthorProfile } from "../services/usersAPI";
 import "../components/AuthorProfile.css";
 
@@ -7,6 +7,7 @@ const AuthorProfilePage = () => {
   const { authorId } = useParams();
   const [author, setAuthor] = useState(null);
   const [recipes, setRecipes] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!authorId) return;
@@ -49,7 +50,12 @@ const AuthorProfilePage = () => {
 
           <div className="recipe-list">
             {recipes.map((r) => (
-              <div key={r._id} className="recipe-card">
+              <div
+                key={r._id}
+                className="recipe-card"
+                onClick={() => navigate(`/recipes/${r._id}`)}
+                style={{ cursor: "pointer" }}
+              >
                 <img
                   src={
                     r.image_url || "/static/uploads/recipes/default-recipe.jpg"

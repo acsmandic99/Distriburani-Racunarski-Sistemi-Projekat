@@ -7,7 +7,6 @@ const Recipe = ({ recipe, onRate }) => {
   const navigate = useNavigate();
 
   const [userRating, setUserRating] = useState(0);
-  const [hoveredStar, setHoveredStar] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
   const [isFavourite, setIsFavourite] = useState(recipe.is_favourite ?? false);
 
@@ -40,9 +39,8 @@ const Recipe = ({ recipe, onRate }) => {
   };
 
   console.log("Recipe:", recipe._id, "is_favourite:", recipe.is_favourite);
-const baseUrl = "http://localhost:5000";
+  const baseUrl = "http://localhost:5000";
   return (
-    
     <div className="recipe-card">
       <img
         src={recipe.image_url}
@@ -70,7 +68,7 @@ const baseUrl = "http://localhost:5000";
 
         <div className="recipe-author">
           <Link to={`/author/${recipe.author.author_id}`}>
-            Author: {recipe.author.first_name} {recipe.author.last_name}
+            Autor: {recipe.author.first_name} {recipe.author.last_name}
           </Link>
         </div>
 
@@ -85,65 +83,17 @@ const baseUrl = "http://localhost:5000";
           </div>
 
           <div className="rating-input">
-            <span>Tvoja ocena:</span>
-            <div className="stars">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  onClick={() => handleRate(star)}
-                  onMouseEnter={() => setHoveredStar(star)}
-                  onMouseLeave={() => setHoveredStar(0)}
-                  className="star-button"
-                >
-                  <span
-                    className={
-                      (hoveredStar || userRating) >= star
-                        ? "star star-filled"
-                        : "star star-empty"
-                    }
-                  >
-                    ★
-                  </span>
-                </button>
-              ))}
-
-              <button
-                className="favourite-button"
-                onClick={handleToggleFavourite}
-                title={
-                  isFavourite ? "Remove from favourites" : "Add to favourites"
-                }
-              >
-                {isFavourite ? "❤️" : "🤍"}
-              </button>
-            </div>
+            <button
+              className="favourite-button"
+              onClick={handleToggleFavourite}
+              title={
+                isFavourite ? "Remove from favourites" : "Add to favourites"
+              }
+            >
+              {isFavourite ? "❤️" : "🤍"}
+            </button>
           </div>
         </div>
-
-        <button
-          onClick={() => setShowDetails(!showDetails)}
-          className="details-button"
-        >
-          {showDetails ? "Sakrij detalje" : "Prikaži detalje"}
-        </button>
-
-        {showDetails && (
-          <div className="recipe-details">
-            <h4>Sastojci:</h4>
-            <ul>
-              {recipe.ingredients.map((ing, idx) => (
-                <li key={idx}>{ing}</li>
-              ))}
-            </ul>
-
-            <h4>Priprema:</h4>
-            <ul>
-              {recipe.steps.map((step, idx) => (
-                <li key={idx}>{step}</li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
     </div>
   );

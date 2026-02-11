@@ -15,6 +15,7 @@ import { LoginPage, RegisterPage } from "./features/auth";
 import { RecipesPage, RecipeDetailsPage } from "./features/recipes";
 import { AdminUsersPage, RoleRequestsPage } from "./features/admin";
 import { ProfilePage, AuthorPage, AuthorProfilePage } from "./features/users";
+import { FavouritesPage } from "./features/favourites";
 import ProtectedRoute from "./features/shared/components/ProtectedRoute";
 
 function AppRoutes() {
@@ -33,6 +34,7 @@ function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route path="/recipes" element={<RecipesPage />} />
         <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
+        <Route path="/favourites" element={<FavouritesPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/author" element={<AuthorPage />} />
         <Route path="/author/:authorId" element={<AuthorProfilePage />} />
