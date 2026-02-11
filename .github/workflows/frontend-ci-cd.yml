@@ -24,9 +24,9 @@ jobs:
       - name: Build and push Frontend image
         uses: docker/build-push-action@v5
         with:
+          with:
           context: .
           file: client/Dockerfile.prod
-          file: ./client/Dockerfile.prod
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/drs-frontend:latest
