@@ -109,4 +109,4 @@ class AdminService:
             pdf.cell(40, 10, str(author.get("average_rating", 0.0)), border=1)
             pdf.cell(40, 10, str(author.get("total_ratings", 0)), border=1, ln=True)
 
-        return pdf.output(dest='S').encode('latin-1')
+        return pdf.output(dest='S')
