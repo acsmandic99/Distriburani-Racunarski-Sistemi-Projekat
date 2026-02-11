@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:5000", // backend Flask API
+  baseURL: import.meta.env.PROD 
+    ? "https://backend-z574.onrender.com" 
+    : "http://127.0.0.1:5000",
 });
 
 api.interceptors.request.use(
