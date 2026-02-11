@@ -1,4 +1,4 @@
-from flask import make_response
+from flask import make_response,request
 from ..shared.utils import api_response
 from .services import AdminService
 from . import admin_bp
@@ -6,13 +6,15 @@ from ..shared.constants import messages
 from flask_jwt_extended import get_jwt_identity,jwt_required
 from ..shared.utils.decorators.admin_decorator import admin_required
 from bson import ObjectId
+
 @admin_bp.route("/users", methods=["GET"])
 @jwt_required()
 @admin_required
 def get_all_users():
     try:
         """Vraca listu svih registrovanih korisnika."""
-        users = AdminService.get_users()
+        base_url = request.host_url.rstrip('/')
+        users = AdminService.get_users(base_url)
         return api_response.success(messages.USERS_FETCHED,data=users)
     except Exception as e:
         print(e)

@@ -113,7 +113,8 @@ def change_password():
 @users_bp.route("/author-profile/<author_id>", methods=["GET"])
 def get_author_profile_new(author_id):
     try:
-        profile = UserService.get_author_profile_final(author_id)
+        base_url = request.host_url.rstrip('/')
+        profile = UserService.get_author_profile_final(author_id,base_url)
         
         return api_response.success(
             messages.USER_FETCHED, 

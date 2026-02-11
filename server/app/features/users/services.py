@@ -8,6 +8,7 @@ from ..shared.constants.author_request_status import AUTHOR_REQUEST_PENDING
 from ..shared.constants import messages
 from ..shared.utils.image_service.service import ImageService
 from ..shared.utils.image_service.folders import PROFILE_IMAGE_FOLDER
+from ..shared.utils.url_fixer import fix_urls
 class UserService:
     @staticmethod
     def create_user(userCreate: UserCreateSchema):
@@ -65,10 +66,11 @@ class UserService:
         
         return user
     @staticmethod
-    def get_users():
+    def get_users(base_url):
         users = list(mongo.db.users.find({}, {"password": 0}))
         for u in users:
             u["_id"] = str(u["_id"])
+            fix_urls(u,base_url)
         return users
 
     @staticmethod
@@ -234,7 +236,7 @@ class UserService:
     
 
     @staticmethod
-    def get_author_profile_final(author_id):
+    def get_author_profile_final(author_id,base_url):
         from ..recipes.services import RecipeService
         
         author_raw = mongo.db.users.find_one({"_id": ObjectId(author_id)})
@@ -245,7 +247,9 @@ class UserService:
         author_raw['id'] = str(author_raw.pop('_id'))
 
         author_recipes = RecipeService.get_all_recipes(
-            filter_query={"author.author_id": str(author_id)}
+            filter_query={"author.author_id": str(author_id)},
+            base_url=base_url
+            
         )
         author_raw['recipes'] = author_recipes
 

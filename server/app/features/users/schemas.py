@@ -21,7 +21,8 @@ class UserCreateSchema(BaseModel):
     total_recipes:int = 0
     average_rating: float = 0.0
     total_ratings: int = 0
-
+    profile_picture: str = "/static/uploads/profile-images/default-avatar.jpg"
+    favorite_recipes: List[str] = []
 
     @field_validator("date_of_birth")
     @classmethod
@@ -59,8 +60,8 @@ class UserResponseSchema(BaseModel):
     updated_at: datetime
     total_recipes: int
     average_rating: float
-    profile_picture: Optional[str] = None
-
+    profile_picture: str = ""
+    favorite_recipes: List[str] = []
     model_config = {
         "from_attributes": True
     }
