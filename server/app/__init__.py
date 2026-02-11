@@ -17,12 +17,24 @@ from flask_socketio import SocketIO
 import os
 
 def create_app() -> Flask:
+    @app.route('/test-db')
+    def test_db():
+        try:
+            mongo.db.command('ping')
+            return {"status": "Sjajno!", "db": "Povezan na Atlas"}, 200
+        except Exception as e:
+            return {"status": "Greška!", "error": str(e)}, 500
+        
     static_dir = os.path.join(os.getcwd(), 'app', 'static')
     app = Flask(__name__,
                 static_folder=static_dir, 
                 static_url_path='/static')
     # Load configuration
     app.config.from_object('config.Config')
+
+    mongo_uri = os.getenv("MONGO_URI_FULL")
+    print(f"DEBUG: MONGO_URI_FULL iz okruzenja: {mongo_uri[:20] if mongo_uri else 'NEMA VARIJABLE'}")
+
 
     # Initialize extensions
     mongo.init_app(app)
@@ -57,5 +69,6 @@ def create_app() -> Flask:
     app.register_blueprint(comment_bp)
     app.register_blueprint(favourites_bp)
     app.register_blueprint(reviews_bp)
-   
+
+
     return app
