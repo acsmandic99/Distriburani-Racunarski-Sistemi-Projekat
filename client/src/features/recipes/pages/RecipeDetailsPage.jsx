@@ -12,6 +12,7 @@ import CommentsList from "../../comments/components/CommentListForm";
 import { ReviewForm } from "../../reviews";
 import AddComment from "../../comments/components/AddCommentForm";
 import { getRecipeById } from "../services/recipesAPI";
+import { getReviewsForRecipe } from "../../reviews/services/reviewsAPI";
 
 const RecipeDetailsPage = () => {
   const navigate = useNavigate();
@@ -24,6 +25,9 @@ const RecipeDetailsPage = () => {
 
   const [comments, setComments] = useState([]);
   const [loadingComments, setLoadingComments] = useState(true);
+
+  const [reviews, setReviews] = useState([]);
+  const [loadingReviews, setLoadingReviews] = useState(true);
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -58,6 +62,24 @@ const RecipeDetailsPage = () => {
     };
 
     fetchComments();
+  }, [recipeData?._id]);
+
+  useEffect(() => {
+    if (!recipeData?._id) return;
+
+    const fetchReviews = async () => {
+      try {
+        setLoadingReviews(true);
+        const data = await getReviewsForRecipe(recipeData._id);
+        setReviews(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to fetch reviews:", err);
+      } finally {
+        setLoadingReviews(false);
+      }
+    };
+
+    fetchReviews();
   }, [recipeData?._id]);
 
   const handleAddComment = async (formData) => {
@@ -166,7 +188,37 @@ const RecipeDetailsPage = () => {
         </div>
       )}
 
-      {recipeData && !isAuthor && <ReviewForm recipeId={recipeData._id} />}
+      <div className="recipe-reviews">
+        <h2>Reviews</h2>
+
+        {loadingReviews ? (
+          <p>Loading reviews...</p>
+        ) : reviews.length === 0 ? (
+          <p>No reviews yet.</p>
+        ) : (
+          reviews.map((review) => (
+            <div key={review._id} className="review-card">
+              <div className="review-header">
+                <span className="review-rating">
+                  {"⭐".repeat(review.rating)}
+                </span>
+              </div>
+
+              {review.body && <p className="review-body">{review.body}</p>}
+
+              {review.image_url && (
+                <img
+                  src={review.image_url}
+                  alt="Review"
+                  className="review-image"
+                />
+              )}
+            </div>
+          ))
+        )}
+
+        {recipeData && !isAuthor && <ReviewForm recipeId={recipeData._id} />}
+      </div>
 
       <div className="recipe-comments">
         <h3>Comments</h3>
