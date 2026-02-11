@@ -38,22 +38,7 @@ def login():
         print(f"Login error: {e}")
         return api_response.error(messages.INTERNAL_ERROR, 500)
     
-@auth_bp.route("/me", methods=["GET"])
-@jwt_required()
-def get_current_user():
-    try:
-        current_user_id = get_jwt_identity()
-        user = UserService.get_user(current_user_id)
 
-        if not user:
-            return api_response.error(messages.USER_NOT_FOUND,None,404)
-        return api_response.success(
-                message="Profile fetched successfully",
-                data=user,
-                status=200
-            )
-    except Exception as e:
-        return api_response.error(str(e), 500)
 
 @auth_bp.route("/logout", methods=["POST"])
 @jwt_required()
@@ -69,3 +54,20 @@ def logout():
                                   status = 500)
 
 
+@auth_bp.route("/me", methods=["GET"])
+@jwt_required()
+def get_current_user():
+    try:
+        current_user_id = get_jwt_identity()
+        base_url = request.host_url.rstrip('/')
+        user = UserService.get_user(current_user_id,base_url)
+
+        if not user:
+            return api_response.error(messages.USER_NOT_FOUND,None,404)
+        return api_response.success(
+                message="Profile fetched successfully",
+                data=user,
+                status=200
+            )
+    except Exception as e:
+        return api_response.error(str(e), 500)
