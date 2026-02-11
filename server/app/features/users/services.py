@@ -230,7 +230,7 @@ class UserService:
         return "removed"
 
     @staticmethod
-    def get_favorite_ids(user_id):
+    def get_favorite_ids(user_id,base_url):
         user = mongo.db.users.find_one({"_id": ObjectId(user_id)}, {"favorite_recipes": 1})
         return user.get("favorite_recipes", []) if user else []
     

@@ -12,6 +12,6 @@ class FavoriteService:
         return {"action": action}
 
     @staticmethod
-    def get_favorites_detailed(user_id):
-        fav_ids = UserService.get_favorite_ids(user_id)
-        return RecipeService.get_recipes_by_ids(fav_ids)
+    def get_favorites_detailed(user_id,base_url):
+        fav_ids = UserService.get_favorite_ids(user_id,base_url)
+        return RecipeService.get_recipes_by_ids(fav_ids,base_url)

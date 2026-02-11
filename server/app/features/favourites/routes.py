@@ -33,7 +33,8 @@ def toggle_favorite(recipe_id):
 def get_my_favorites():
     try:
         user_id = get_jwt_identity()
-        favorites = FavoriteService.get_favorites_detailed(user_id)
+        base_url = request.host_url.rstrip('/')
+        favorites = FavoriteService.get_favorites_detailed(user_id,base_url)
         
         return api_response.success(messages.FAVOURITES_FETCHED_SUCCESSFULLY, data=favorites, status=200)
     

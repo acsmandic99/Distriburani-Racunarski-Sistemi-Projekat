@@ -93,7 +93,7 @@ class RecipeService:
         )
 
     @staticmethod
-    def get_recipes_by_ids(recipe_ids):
+    def get_recipes_by_ids(recipe_ids,base_url):
         if not recipe_ids:
             return []
 
@@ -104,6 +104,7 @@ class RecipeService:
         recipes = []
         for r in cursor:
             r["_id"] = str(r["_id"])
+            fix_urls(r,base_url)
             recipes.append(r)
         return recipes
     
