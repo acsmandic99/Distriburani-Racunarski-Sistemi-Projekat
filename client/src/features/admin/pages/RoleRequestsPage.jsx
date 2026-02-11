@@ -27,7 +27,7 @@ const RoleRequestsPage = () => {
 
   useEffect(() => {
     fetchRequests();
-    const socket = io("http://localhost:5000");
+    const socket = io("https://backend-z574.onrender.com/");
 
     socket.on("new_author_request", (newRequest) => {
       setRequests((prevRequests) => [newRequest, ...prevRequests]);

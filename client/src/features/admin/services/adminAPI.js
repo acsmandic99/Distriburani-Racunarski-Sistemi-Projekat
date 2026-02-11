@@ -1,7 +1,8 @@
 import axios from "axios";
 import api from "../../shared/services/api/api";
 
-const API_URL = "http://localhost:5000/api/v1/admin";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_URL = `${BASE_URL}/api/v1/admin`;
 
 const getAuthHeaders = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -32,7 +33,7 @@ export const getAllUsers = async () => {
 export const deleteUser = async (userId) => {
   const token = localStorage.getItem("token");
   const response = await fetch(
-    `http://localhost:5000/api/v1/admin/delete-user/${userId}`,
+    `${API_URL}/delete-user/${userId}`,
     {
       method: "DELETE",
       headers: {
@@ -53,7 +54,7 @@ export const deleteUser = async (userId) => {
 export const approveAuthorRequest = async (requestId) => {
   const token = localStorage.getItem("token");
   const response = await fetch(
-    `http://localhost:5000/api/v1/admin/approve-request/${requestId}`,
+    `${API_URL}/approve-request/${requestId}`,
     {
       method: "POST",
       headers: {
@@ -73,7 +74,7 @@ export const approveAuthorRequest = async (requestId) => {
 export const rejectAuthorRequest = async (requestId) => {
   const token = localStorage.getItem("token");
   const response = await fetch(
-    `http://localhost:5000/api/v1/admin/reject-request/${requestId}`,
+    `${API_URL}/reject-request/${requestId}`,
     {
       method: "POST",
       headers: {
