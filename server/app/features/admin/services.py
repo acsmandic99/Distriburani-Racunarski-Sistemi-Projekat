@@ -9,8 +9,8 @@ from fpdf import FPDF
 from ..shared.utils.email_sender import launch_email_process
 class AdminService:
     @staticmethod
-    def get_users():
-        users = UserService.get_users()
+    def get_users(base_url):
+        users = UserService.get_users(base_url)
         return users
 
     @staticmethod

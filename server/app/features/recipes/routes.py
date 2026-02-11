@@ -47,10 +47,11 @@ def get_recipes():
 
         dish_type = request.args.get('type')
         difficulty = request.args.get('difficulty')
-
+        base_url = request.host_url.rstrip('/')
         recipes = RecipeService.get_all_recipes(page,
                                                 per_page,
-                                                None
+                                                None,
+                                                base_url
         )
         return api_response.success(
                 message="Recipes retrieved successfully",

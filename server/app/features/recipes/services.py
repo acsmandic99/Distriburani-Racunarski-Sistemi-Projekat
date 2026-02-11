@@ -7,7 +7,7 @@ from app.extensions import mongo
 from bson import ObjectId
 from ..shared.constants.user_roles import READER_ROLE
 from ..shared.constants import messages
-
+from ..shared.utils.url_fixer import fix_urls
 class RecipeService:
     @staticmethod
     def add_recipe(user_id,image_file,raw_data):
@@ -42,7 +42,7 @@ class RecipeService:
         return {**full_recipe.model_dump(), "_id": str(result.inserted_id)}
     
     @staticmethod
-    def get_all_recipes(page = 1,per_page=10,filter_query=None):
+    def get_all_recipes(page = 1,per_page=10,filter_query=None,base_url = ''):
         skip = (page - 1) * per_page
 
         query = filter_query if filter_query else {}
@@ -55,7 +55,7 @@ class RecipeService:
             r["_id"] = str(r["_id"])
             recipes.append(r)
 
-        return recipes
+        return fix_urls(recipes,base_url)
     
     @staticmethod
     def add_comment(recipe_id, new_comment_data): 
@@ -105,7 +105,6 @@ class RecipeService:
         for r in cursor:
             r["_id"] = str(r["_id"])
             recipes.append(r)
-            
         return recipes
     
     @staticmethod

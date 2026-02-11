@@ -14,10 +14,13 @@ from datetime import timedelta
 from .features.shared.utils.jwt.blocklist import check_if_token_is_revoked
 
 from flask_socketio import SocketIO
-
+import os
 
 def create_app() -> Flask:
-    app = Flask(__name__)
+    static_dir = os.path.join(os.getcwd(), 'app', 'static')
+    app = Flask(__name__,
+                static_folder=static_dir, 
+                static_url_path='/static')
     # Load configuration
     app.config.from_object('config.Config')
 
