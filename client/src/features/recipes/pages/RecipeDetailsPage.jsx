@@ -166,7 +166,7 @@ const RecipeDetailsPage = () => {
         </div>
       )}
 
-      {recipeData && <ReviewForm recipeId={recipeData._id} />}
+      {recipeData && !isAuthor && <ReviewForm recipeId={recipeData._id} />}
 
       <div className="recipe-comments">
         <h3>Comments</h3>
