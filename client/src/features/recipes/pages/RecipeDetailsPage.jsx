@@ -179,14 +179,14 @@ const RecipeDetailsPage = () => {
         ))}
       </ol>
 
-      {isAuthor && (
+      {/* {isAuthor && (
         <div className="recipe-actions">
           <button onClick={handleEdit}>Edit</button>
           <button onClick={handleDelete} style={{ marginLeft: "10px" }}>
             Delete
           </button>
         </div>
-      )}
+      )} */}
 
       <div className="recipe-reviews">
         <h2>Reviews</h2>
