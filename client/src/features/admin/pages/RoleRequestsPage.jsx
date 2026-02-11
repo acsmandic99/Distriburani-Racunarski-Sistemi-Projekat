@@ -4,6 +4,9 @@ import { AuthContext } from "../../shared/contexts/AuthContext";
 import { getAuthorRequests, processAuthorRequest } from "../services/adminAPI.js"; 
 import { approveAuthorRequest, rejectAuthorRequest } from "../services/adminAPI.js";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_URL = `${BASE_URL}`;
+
 const RoleRequestsPage = () => {
   const { user } = useContext(AuthContext);
   const [requests, setRequests] = useState([]);
@@ -27,7 +30,7 @@ const RoleRequestsPage = () => {
 
   useEffect(() => {
     fetchRequests();
-    const socket = io("https://backend-z574.onrender.com/");
+    const socket = io(API_URL);
 
     socket.on("new_author_request", (newRequest) => {
       setRequests((prevRequests) => [newRequest, ...prevRequests]);
