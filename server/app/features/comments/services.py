@@ -8,7 +8,7 @@ from .schemas import CommentSchema
 from ..shared.utils.email_sender import launch_email_process
 class CommentService:
     @staticmethod
-    def add_comment(user_id, image_file, raw_data):
+    def add_comment(user_id, image_file, raw_data,base_url):
         from ..recipes.services import RecipeService
         recipe_id = raw_data.get('recipe_id')
         if not recipe_id:
@@ -44,11 +44,17 @@ class CommentService:
         RecipeService.add_comment(recipe_id,comment_data_for_recipe)
         response_comment_data = new_comment.model_dump(mode='json')
         response_comment_data["_id"] = str(inserted_comment.inserted_id)
-        print(recipe)
-        recipe_author = UserService.get_user_by_id(recipe['author']['author_id'])
-        user_email = recipe_author["email"]
-        launch_email_process(user_email, f"Novi komentar za vas recept {recipe['title']}",
-                              f"Korisnik {author_data['first_name']}{author_data['last_name']} je ostavio komentar:\n{comment_dict['body']}")
+        #print(recipe)
+        recipe_author = UserService.get_user_by_id(recipe['author']['author_id'],base_url)
+        if recipe_author and "email" in recipe_author:
+            user_email = recipe_author["email"]
+            launch_email_process(
+                user_email, 
+                f"Novi komentar za vas recept {recipe['title']}",
+                f"Korisnik {author_data['first_name']} {author_data['last_name']} je ostavio komentar:\n{comment_dict['body']}"
+            )
+        else:
+            print("GRESKA: Autor recepta nije pronadjen ili nema email, preskacem slanje mejla.")
 
         return response_comment_data
     

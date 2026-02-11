@@ -12,8 +12,8 @@ def add_comment():
         user_id = get_jwt_identity()
         raw_data = request.form.to_dict()
         image_file = request.files.get('image')
-
-        comment = CommentService.add_comment(user_id, image_file, raw_data)
+        base_url = request.host_url.rstrip('/')
+        comment = CommentService.add_comment(user_id, image_file, raw_data,base_url)
         
         return api_response.success(messages.COMMENT_ADDED_SUCCESSFULLY,comment,201,)
     except ValueError as e:
