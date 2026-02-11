@@ -23,10 +23,11 @@ def create_app() -> Flask:
     app = Flask(__name__,
                 static_folder=static_dir, 
                 static_url_path='/static')
+    
     # Load configuration
     app.config.from_object('config.Config')
-
-    mongo_uri = os.getenv("MONGO_URI_FULL")
+    app.config["MONGO_URI"] = os.getenv("MONGO_URI_FULL")
+    #mongo_uri = os.getenv("MONGO_URI_FULL")
     print(f"DEBUG: MONGO_URI_FULL iz okruzenja: {mongo_uri[:20] if mongo_uri else 'NEMA VARIJABLE'}")
 
 
@@ -39,20 +40,22 @@ def create_app() -> Flask:
 
     @jwt.token_in_blocklist_loader
     def check_if_token_is_revoked(jwt_header, jwt_payload):
+        if not redis_client:
+            return False
         jti = jwt_payload["jti"]
         token_in_redis = redis_client.get(f"blacklist:{jti}")
         return token_in_redis is not None
 
     cors.init_app(app, resources={
         r"/api/*": {
-            "origins": ["http://localhost:5173", "http://127.0.0.1:5173"],
+            "origins": "*",
             "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "supports_credentials": True
         }
     })
     test_connection()
-    test_redis()
+    #test_redis()
   
     # Register blueprints
     app.register_blueprint(users_bp)
