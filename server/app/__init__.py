@@ -27,7 +27,7 @@ def create_app() -> Flask:
     # Load configuration
     app.config.from_object('config.Config')
     app.config["MONGO_URI"] = os.getenv("MONGO_URI_FULL")
-    #mongo_uri = os.getenv("MONGO_URI_FULL")
+    mongo_uri = os.getenv("MONGO_URI_FULL")
     print(f"DEBUG: MONGO_URI_FULL iz okruzenja: {mongo_uri[:20] if mongo_uri else 'NEMA VARIJABLE'}")
 
 
