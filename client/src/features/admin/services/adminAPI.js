@@ -1,18 +1,26 @@
 import axios from "axios";
+import api from "../../shared/services/api/api";
 
-const API_URL = "http://localhost:5000/api/v1/admin"; 
+const API_URL = "http://localhost:5000/api/v1/admin";
 
 const getAuthHeaders = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 });
 
 export const getAuthorRequests = async () => {
-  const response = await axios.get(`${API_URL}/author-requests`, getAuthHeaders());
+  const response = await axios.get(
+    `${API_URL}/author-requests`,
+    getAuthHeaders(),
+  );
   return response.data.data;
 };
 
 export const processAuthorRequest = async (requestId, action) => {
-  const response = await axios.post(`${API_URL}/${action}-author/${requestId}`, {}, getAuthHeaders());
+  const response = await axios.post(
+    `${API_URL}/${action}-author/${requestId}`,
+    {},
+    getAuthHeaders(),
+  );
   return response.data;
 };
 
@@ -21,16 +29,18 @@ export const getAllUsers = async () => {
   return response.data.data;
 };
 
-
 export const deleteUser = async (userId) => {
-  const token = localStorage.getItem("token"); 
-  const response = await fetch(`http://localhost:5000/api/v1/admin/delete-user/${userId}`, {
-    method: "DELETE",
-    headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    }
-  });
+  const token = localStorage.getItem("token");
+  const response = await fetch(
+    `http://localhost:5000/api/v1/admin/delete-user/${userId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
 
   if (!response.ok) {
     const errorData = await response.json();
@@ -40,16 +50,18 @@ export const deleteUser = async (userId) => {
   return await response.json();
 };
 
-
 export const approveAuthorRequest = async (requestId) => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`http://localhost:5000/api/v1/admin/approve-request/${requestId}`, {
-    method: "POST", 
-    headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    }
-  });
+  const response = await fetch(
+    `http://localhost:5000/api/v1/admin/approve-request/${requestId}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
 
   if (!response.ok) {
     const errorData = await response.json();
@@ -60,17 +72,28 @@ export const approveAuthorRequest = async (requestId) => {
 
 export const rejectAuthorRequest = async (requestId) => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`http://localhost:5000/api/v1/admin/reject-request/${requestId}`, {
-    method: "POST", 
-    headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    }
-  });
+  const response = await fetch(
+    `http://localhost:5000/api/v1/admin/reject-request/${requestId}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
 
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.message || "Greška pri odbijanju");
   }
   return await response.json();
+};
+
+export const downloadAdminReport = async () => {
+  const response = await api.get("/api/v1/admin/report/pdf", {
+    responseType: "blob",
+  });
+
+  return response.data;
 };
