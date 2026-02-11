@@ -81,7 +81,24 @@ body {
   text-align: center;
 }
 
+.avatar-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 .avatar-preview img {
-  max-width: 200px;
-  max-height: 200px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #007bff;
+}
+
+.avatar-preview p {
+  text-align: center;
+  color: #555;
+  font-size: 14px;
+  margin: 0;
 }

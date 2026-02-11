@@ -83,7 +83,9 @@ const AuthorProfilePage = () => {
               <div
                 key={r._id}
                 className="recipe-card"
-                onClick={() => navigate(`/recipes/${r._id}`)}
+                onClick={() =>
+                  navigate(`/recipes/${r._id}`, { state: { recipe: r } })
+                }
                 style={{ cursor: "pointer" }}
               >
                 <img

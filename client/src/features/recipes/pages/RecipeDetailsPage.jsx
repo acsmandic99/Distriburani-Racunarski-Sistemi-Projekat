@@ -30,21 +30,23 @@ const RecipeDetailsPage = () => {
   const [loadingReviews, setLoadingReviews] = useState(true);
 
   useEffect(() => {
-    const fetchRecipe = async () => {
+    if (!recipeData?._id) return;
+
+    const fetchReviews = async () => {
+      setLoadingReviews(true);
       try {
-        if (!recipe && id) {
-          const data = await getRecipeById(id);
-          setRecipeData(data);
-        }
+        const data = await getReviewsForRecipe(recipeData._id);
+        setReviews(Array.isArray(data) ? data : []);
       } catch (err) {
-        console.error("Failed to fetch recipe:", err);
+        console.error("Failed to fetch reviews:", err);
+        setReviews([]);
       } finally {
-        setLoadingRecipe(false);
+        setLoadingReviews(false);
       }
     };
 
-    fetchRecipe();
-  }, [id, recipe]);
+    fetchReviews();
+  }, [recipeData?._id]);
 
   useEffect(() => {
     if (!recipeData?._id) return;
@@ -62,24 +64,6 @@ const RecipeDetailsPage = () => {
     };
 
     fetchComments();
-  }, [recipeData?._id]);
-
-  useEffect(() => {
-    if (!recipeData?._id) return;
-
-    const fetchReviews = async () => {
-      try {
-        setLoadingReviews(true);
-        const data = await getReviewsForRecipe(recipeData._id);
-        setReviews(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error("Failed to fetch reviews:", err);
-      } finally {
-        setLoadingReviews(false);
-      }
-    };
-
-    fetchReviews();
   }, [recipeData?._id]);
 
   const handleAddComment = async (formData) => {
