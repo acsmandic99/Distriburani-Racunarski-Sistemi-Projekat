@@ -6,6 +6,7 @@ from ..shared.utils.image_service.service import ImageService
 from ..users.services import UserService 
 from .schemas import CommentSchema
 from ..shared.utils.email_sender import launch_email_process
+from ..shared.utils.url_fixer import fix_urls
 class CommentService:
     @staticmethod
     def add_comment(user_id, image_file, raw_data,base_url):
@@ -22,7 +23,7 @@ class CommentService:
         comment_image = None
         if image_file:
             comment_image = ImageService.upload_image(image_file, "comments")
-
+        fix_urls(comment_image,base_url)
         comment_dict = {
             "recipe_id": recipe_id,
             "body": raw_data.get('body'),
