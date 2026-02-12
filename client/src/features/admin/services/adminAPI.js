@@ -3,7 +3,8 @@ import api from "../../shared/services/api/api";
 
 //const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const BASE_URL = "https://tvoj-backend.onrender.com";
-const API_URL = `${BASE_URL}/api/v1/admin`;
+//const API_URL = `${BASE_URL}/api/v1/admin`;
+const API_URL = "https://tvoj-backend.onrender.com/api/v1/admin";
 
 const getAuthHeaders = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

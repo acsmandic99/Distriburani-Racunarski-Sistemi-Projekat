@@ -24,7 +24,6 @@ jobs:
       - name: Build and push Frontend image
         uses: docker/build-push-action@v5
         with:
-          with:
           context: .
           file: client/Dockerfile.prod
           push: true
@@ -39,4 +38,4 @@ jobs:
     steps:
       - name: Deploy to Render
         run: |
-          curl -X POST ${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK }}
+          curl -f -X POST "${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK }}"
